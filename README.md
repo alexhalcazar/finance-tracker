@@ -14,6 +14,28 @@ Benefits of this setup.
 
 > In development, you may run both the server and client independently by running each server and client instance on two different terminal shells
 
+## Installing Node Modules
+
+### How to Install Node Packages on Client Folder
+
+Before trying to run each project independently, navigate to the client project and install the node packages via npm.
+
+```bash
+cd client
+npm install
+```
+
+> `node_modules`folder are ignored in the `client/.gitignore` when using git
+
+### How to Install Node Packages on Server Folder
+
+Next on the server folder, navigate to it using the terminal then install the node packages via npm.
+
+```bash
+cd server
+npm install
+```
+
 ### How to run the server
 
 On the project directory, after cloning this repository, you may enter the following to run the server:

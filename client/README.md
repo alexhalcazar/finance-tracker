@@ -1,12 +1,32 @@
-# React + Vite
+## Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Minimal overview of the react client application, to run the application read the root directory README.md
 
-Currently, two official plugins are available:
+### Eslint Config Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Ignores the dist directory.
 
-## Expanding the ESLint configuration
+- ESLint prevents from checking build output files, as they are outputted they can be changed over time.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Extends in EsLint Config
+
+`extends` keyword is extending rules on what is the minimal configuration.
+
+- JavaScript recommended rules (js.configs.recommended)
+  - Provides basic JavaScript linting rules such as catching syntax errors, unused variables, etc.
+  - Will stop only at build time
+- React Hooks rules (reactHooks.configs['recommended-latest'])
+  - Enforces React Hooks best practices
+  - Hooks are called in the same order and only at top level of components.
+- React Refresh rules (reactRefresh.configs.vite)
+  - Ensures components are compatible with Vite's hot module replacement (HMR) for fast development feedback
+
+### Language Configuration
+
+Language Configuration:
+
+- ECMAScript 2020+ support with latest features enabled
+- Browser globals available (like window, document, etc.)
+- JSX parsing enabled for React components
+- ES modules support for import/export statements
+  - i.e. `import express from "express";`

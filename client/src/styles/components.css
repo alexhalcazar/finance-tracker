@@ -1,0 +1,142 @@
+/* Label Component */
+.ui-label {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* Input Component */
+.ui-input {
+  padding: 12px 16px;
+  border: 1px solid var(--white-color);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.ui-input:focus {
+  border-color: var(--primary-color);
+  background-color: white;
+  box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+.ui-input:disabled {
+  background-color: var(--white-bg);
+  color: var(--text-muted-color);
+  cursor: not-allowed;
+}
+
+.ui-input.error {
+  border-color: var(--error-color);
+}
+
+.ui-input.error:focus {
+  border-color: var(--error-color);
+  box-shadow: 0 0 0 3px var(--error-color);
+}
+
+/* Button Component */
+.ui-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Button Variants */
+.ui-button.primary {
+  background-color: var(--secondary-bg);
+  color: white;
+}
+
+.ui-button.primary:hover {
+  background-color: var(--secondary-bg);
+}
+
+.ui-button.primary:active {
+  background-color: var(--secondary-bg);
+  transform: translateY(1px);
+}
+
+.ui-button.secondary {
+  background-color: white;
+  color: #374151;
+  border: 1px solid var(--white-bg);
+}
+
+.ui-button.secondary:hover {
+  background-color: var(--white-bg);
+}
+
+.ui-button.outline {
+  background-color: transparent;
+  color: #374151;
+  border: 1px solid var(--white-color);
+}
+
+.ui-button.outline:hover {
+  background-color: var(--white-bg);
+}
+
+.ui-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button Sizes */
+.ui-button.small {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.ui-button.large {
+  padding: 16px 32px;
+  font-size: 18px;
+}
+
+/* Error Message Component */
+.ui-error-message {
+  font-size: 14px;
+  color: var(--error-color);
+  margin-top: 4px;
+  display: block;
+}
+
+/* Form Group Component */
+.ui-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Auth Form Component Styling */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  flex-direction: row;
+  margin-top: 4px;
+}

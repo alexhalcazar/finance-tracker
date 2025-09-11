@@ -1,9 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { Label } from "./ui/label";
+import { Label } from "@/components/ui/label";
 
-export function AuthForm({ className }) {
+export function AuthForm({ formType, className }) {
+  //  Make text be register when passed in register, otherwise it is sign in
+  const buttonCta = formType === "register" ? "Register" : "Sign In";
+
   return (
     <form className={className}>
       <div className="field-group">
@@ -20,14 +23,21 @@ export function AuthForm({ className }) {
         />
       </div>
 
+      {formType === "register" && (
+        <div className="field-group">
+          <Label htmlFor="confirmPassword">Confirm Password</Label>
+          <Input
+            type="password"
+            placeholder="Confirm your password"
+            id="confirmPassword"
+          />
+        </div>
+      )}
+
       <div className="button-group">
         <Button variant="primary" type="submit">
-          Sign In
+          {buttonCta}
         </Button>
-
-        <Link to="/">
-          <Button variant="secondary">Cancel</Button>
-        </Link>
       </div>
     </form>
   );

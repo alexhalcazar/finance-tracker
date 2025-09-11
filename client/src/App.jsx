@@ -1,9 +1,4 @@
-function App() {
-  return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
-  );
-}
+import React from 'react';
+import AuthDemo from './pages/AuthDemo.jsx';
+export default function App() { return <AuthDemo />; }
 
-export default App;

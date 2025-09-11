@@ -1,21 +1,21 @@
 import { AuthForm } from "@/components/AuthForm";
-import "@/styles/Auth.css";
 import { Link } from "react-router";
+import "@/styles/Auth.css";
 
-export function Login() {
+export function Register() {
   return (
     <main className="auth-container">
       <div className="auth-header">
-        <h2>Login</h2>
-        <p>Welcome back to pocket budget, jump back below.</p>
+        <h2>Register</h2>
+        <p>Your pocket budget awaits, register an account with us!</p>
       </div>
 
       <div className="auth-card">
-        <AuthForm className="auth-form" formType="login" />
+        <AuthForm className="auth-form" formType="register" />
         <p>
-          Don&apos;t have an account?
+          Already have an account?
           <span>
-            <Link to="/auth/register">Register</Link>
+            <Link to="/auth/login">Login</Link>
           </span>
         </p>
       </div>

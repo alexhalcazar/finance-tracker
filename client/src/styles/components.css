@@ -120,23 +120,3 @@
   gap: 8px;
   margin-bottom: 16px;
 }
-
-/* Auth Form Component Styling */
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.button-group {
-  display: flex;
-  gap: 12px;
-  flex-direction: row;
-  margin-top: 4px;
-}

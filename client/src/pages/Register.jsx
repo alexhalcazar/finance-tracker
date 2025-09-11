@@ -6,7 +6,7 @@ export function Register() {
   return (
     <main className="auth-container">
       <div className="auth-header">
-        <h2>Register</h2>
+        <h2 className="text-3xl font-bold underline">Register</h2>
         <p>Your pocket budget awaits, register an account with us!</p>
       </div>
 

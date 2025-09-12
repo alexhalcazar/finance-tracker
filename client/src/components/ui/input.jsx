@@ -1,4 +1,5 @@
-//  Input is set to false for error, pass true to display red color
+import { cn } from "@/utils/cn";
+
 export function Input({
   error = false,
   errorMessage,
@@ -6,13 +7,31 @@ export function Input({
   id,
   ...props
 }) {
-  const inputClasses = `ui-input ${error ? "error" : ""} ${className}`;
+  const inputBaseClasses =
+    "px-4 py-3 border rounded-lg text-base transition-all duration-200 outline-none w-full" +
+    " border-muted bg-white text-muted placeholder-muted";
+
+  const inputFocusClasses =
+    "focus:border-primary focus:bg-white focus:ring-3 focus:ring-primary/20";
+
+  const inputDisabledStyles =
+    "disabled:bg-muted disabled:text-secondary-foreground disabled:cursor-not-allowed disabled:border-muted";
+
+  const inputErrorStyles = "focus:border-red-500 focus:ring-error/20";
+
+  const finalInputClasses = cn(
+    inputBaseClasses,
+    inputFocusClasses,
+    inputDisabledStyles,
+    error && [inputErrorStyles],
+    className
+  );
 
   return (
-    <div className="ui-form-group">
-      <input id={id} className={inputClasses} {...props} />
+    <div className="space-y-1">
+      <input id={id} className={finalInputClasses} {...props} />
       {error && errorMessage && (
-        <span className="ui-error-message">{errorMessage}</span>
+        <span className="text-sm text-error block">{errorMessage}</span>
       )}
     </div>
   );

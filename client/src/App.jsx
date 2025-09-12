@@ -1,5 +1,3 @@
-import { AuthForm } from "@/components/AuthForm";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 
 function App() {

@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
 import { Label } from "@/components/ui/label";
 
 export function AuthForm({ formType, className }) {
@@ -9,32 +8,29 @@ export function AuthForm({ formType, className }) {
 
   return (
     <form className={className}>
-      <div className="field-group">
+      <div className="space-y-8">
         <Label htmlFor="email">Email</Label>
         <Input type="email" placeholder="Enter your email" id="email" />
-      </div>
 
-      <div className="field-group">
         <Label htmlFor="password">Password</Label>
         <Input
           type="password"
           placeholder="Enter your password"
           id="password"
         />
+
+        {formType === "register" && (
+          <>
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              type="password"
+              placeholder="Confirm your password"
+              id="confirmPassword"
+            />
+          </>
+        )}
       </div>
-
-      {formType === "register" && (
-        <div className="field-group">
-          <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input
-            type="password"
-            placeholder="Confirm your password"
-            id="confirmPassword"
-          />
-        </div>
-      )}
-
-      <div className="button-group">
+      <div className="mt-4">
         <Button variant="primary" type="submit">
           {buttonCta}
         </Button>

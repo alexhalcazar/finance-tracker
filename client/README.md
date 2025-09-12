@@ -30,3 +30,37 @@ Language Configuration:
 - JSX parsing enabled for React components
 - ES modules support for import/export statements
   - i.e. `import express from "express";`
+
+## Project Directory
+
+├── public/
+│ └── apple-touch-icon.png
+├── .vite.config.ts
+├── index.html
+└── src/
+├── assets/
+├── components/
+├── components/
+│ ├── ui
+├── features/
+│ └── auth/
+│ └── AuthForm.jsx
+├── pages/
+│ ├── Home.tsx
+│ └── Profile.tsx
+├── hooks/
+│ ├── useAuth.ts
+│ └── useDebounce.ts
+├── utils/
+│ ├── formatDate.ts
+│ └── generateId.ts
+├── lib/
+│ ├── axiosClient.ts
+│ └── firebase.ts
+├── styles/
+│ ├── globals.css
+│ └── theme.css
+├── router/
+│ └── routes.tsx
+├── App.tsx
+└── main.tsx

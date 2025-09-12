@@ -4,31 +4,31 @@ import { Link } from "react-router";
 
 export function Register() {
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Register</h2>
-          <p className="text-gray-600">
+    <main className="min-h-screen flex items-center justify-center ">
+      <div className="max-w-md w-full space-y-8">
+        <div className="text-center space-y-2">
+          <h2 className="text-3xl text-primary font-bold">Register</h2>
+          <p className="text-base text-muted">
             Your pocket budget awaits, register an account with us!
           </p>
         </div>
 
-        <div className="space-y-6">
+        <Card className="p-8 space-y-6">
           <AuthForm className="auth-form" formType="register" />
 
           <div className="text-center">
-            <p className="text-gray-600">
+            <p className="text-sm text-muted">
               Already have an account?{" "}
               <Link
                 to="/auth/login"
-                className="text-blue-600 hover:text-blue-800 font-medium underline"
+                className="font-medium text-primary hover:text-primary/80 transition-colors"
               >
                 Login
               </Link>
             </p>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </main>
   );
 }

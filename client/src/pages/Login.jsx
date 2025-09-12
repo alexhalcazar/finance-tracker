@@ -1,7 +1,7 @@
-import { AuthForm } from "@/components/AuthForm";
+import { AuthForm } from "@/features/auth/AuthForm";
 import "@/styles/Auth.css";
 import { Link } from "react-router";
-import { Card } from "../components/ui/Card";
+import { Card } from "@/components/ui/Card";
 
 export function Login() {
   return (

@@ -323,6 +323,120 @@ Above we are passing in the router config we exported from our `src/router/route
 
 ## Features
 
-### Auth Form
+### Authentication Overview
 
-ÀuthForm.jsx
+We pass in the form object from the library of [react-hook-form](https://www.react-hook-form.com/get-started/) that handles creating and registering our validation with the validation library [Zod](https://zod.dev/).
+
+From either the form or login pages, we pass down to the auth form component where we handle registering the form schema controllers and error display.
+
+#### Form Schema
+
+We pass in the form schema properties from the `z.object` we defined in the `features/auth/formSchema.js`where we write our own properties we need to look like on the form and use the zod objects to define what the properties are supposed to look like.
+
+For example in the `loginSchema` for the login page, we have the email and password fields associated with the user and pass in what they type they should be and pass in the error message it should return if the patterns are a **mismatch.**
+
+```javascript
+const loginSchema = z.object({
+  email: z.email({
+    pattern: z.regexes.html5Email,
+    error: "Please enter a valid email",
+  }),
+  password: z
+    .string()
+    .min(6, { error: "Password must be at least 6 characters in length." }),
+});
+
+const registerSchema = loginSchema
+  .extend({
+    confirmPassword: z.string(),
+  })
+  .refine((form) => form.password === form.confirmPassword, {
+    message: "Password's do not match",
+    path: ["confirmPassword"],
+  });
+```
+
+#### AuthForm Component
+
+In the `registerSchema`we extend the `loginSchema` zod object by adding a confirmPassword field where we further refine to check if the current form `password`will match the `confirmPassword` property, then we give the message to that new field path if the password's do not match.
+
+The authentication form, `AuthForm.jsx` is a reusable component for both the `Login`and `Register` pages/routes.
+
+Below we are destructuring the passed in form object, where it got initiated in either the parent component of the login or register pages, and grabbing the errors the form can have which is available thanks to our form schema from `formSchema.js`
+
+```javascript
+//  Grab the parent form object passed from parent component, destructure their properties
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = form;
+```
+
+To register, let's take for example the login route, we pass in the register we want to match to the form schema so below we are registering the input to the "email" attribute and react-hook-form will handle linking.
+
+```javascript
+<Input
+  type="email"
+  placeholder="Enter your email"
+  id="email"
+  {...register("email")}
+/>
+<p className={cn([errors.email?.message && "text-error"])}>{errors.email?.message}
+</p>
+```
+
+Notice we destructured the errors from the formState which keeps track of the state of the current form, therefore we used our cn utility function to pass in a _text-error_ tailwind class to add in a shade of red color when we do have an error from the user, finally we will display the errors of that email message which we had set up in our formSchema.js and the text rendered will be below when the user does not match a standard email string.
+
+```javascript
+const loginSchema = z.object({
+  email: z.email({
+    pattern: z.regexes.html5Email,
+    error: "Please enter a valid email",
+  }),
+});
+```
+
+The above error message we have inserted in the loginSchema for the email attribute will get rendered to the below markup when the user enters an invalid format that does not match an email.
+
+```jsx
+<p className={cn([errors.email?.message && "text-error"])}>
+  {errors.email?.message}
+</p>
+```
+
+Finally in the parent component, below is the register comopnent, we will initiate the form object from [react-hook-form](https://www.react-hook-form.com/) where we pass in our [zod](https://zod.dev/) schema, using a zod resolver to bind the schema to the stateful form object, and we insert default values that are used on page load.
+
+```javascript
+//  Stateful register form object passed to authForm, default values denotes first page load and after "resets"
+const registerForm = useForm({
+  resolver: zodResolver(registerSchema),
+  defaultValues: {
+    email: "",
+    password: "",
+    confirmPassword: "",
+  },
+});
+
+const onSubmit = async (data) => {
+  setIsLoading(true);
+
+  try {
+    console.log("Login Data\n", data);
+  } catch (error) {
+    console.error("Login page error: ", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+On the submit function, this is where we can grab the login data that was used on the form and it will output the below to be used to be able to login or connect the endpoint to the backend to login as well as adding additional functionality such as a session token of the logged in user.
+
+```json
+{
+  "email": "test@gmail.com",
+  "password": "testPassword",
+  "confirmPassword": "testPassword;"
+}
+```

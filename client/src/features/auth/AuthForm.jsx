@@ -57,7 +57,7 @@ export function AuthForm({
       </div>
 
       {formType === "register" && (
-        <>
+        <div className="pt-4 pb-2 space-y-2">
           <Label htmlFor="confirmPassword">Confirm Password</Label>
           <Input
             type="password"
@@ -65,10 +65,10 @@ export function AuthForm({
             id="confirmPassword"
             {...register("confirmPassword")}
           />
-          <p className={cn([errors.password?.message && "text-error"])}>
+          <p className={cn([errors.confirmPassword?.message && "text-error"])}>
             {errors.confirmPassword?.message}
           </p>
-        </>
+        </div>
       )}
       <div className="mt-6">
         <Button variant="primary" type="submit" disabled={isLoading}>

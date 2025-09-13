@@ -26,6 +26,7 @@
   --color-secondary: var(--secondary-color);
   --color-secondary-foreground: var(--secondary-foreground-color);
   --color-muted: var(--text-muted-color);
+  --color-error: var(--error-color);
 }
 
 body {

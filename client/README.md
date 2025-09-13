@@ -320,3 +320,9 @@ ReactDOM.createRoot(root).render(<RouterProvider router={router} />);
 ```
 
 Above we are passing in the router config we exported from our `src/router/routes` where we are using the RouterProvider. Please refer to the official data mode react router docs for more information, but essentially it is loading up the routes from the routes config we have set up.
+
+## Features
+
+### Auth Form
+
+ÀuthForm.jsx

@@ -36,7 +36,7 @@ export function Register() {
         <div className="text-center space-y-2">
           <h2 className="text-3xl text-primary font-bold">Register</h2>
           <p className="text-base text-muted">
-            Your pocket budget awaits, register an account with us!
+            Your pocket budget awaits, create an account with us!
           </p>
         </div>
 

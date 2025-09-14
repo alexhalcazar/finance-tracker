@@ -1,4 +1,3 @@
-// server/src/tests/auth.test.js
 import request from 'supertest';
 import fs from 'fs';
 import path from 'path';
@@ -10,7 +9,7 @@ import bcrypt from 'bcryptjs';
 const schemaSql = fs.readFileSync(path.resolve('src/db/schema.sql'), 'utf8');
 
 beforeAll(async () => {
-  // Ensure schema exists and tables are clean for a deterministic test run
+  // Ensure schema exists and tables are clean
   await query(schemaSql);
   await query('DELETE FROM refresh_tokens');
   await query('DELETE FROM users');

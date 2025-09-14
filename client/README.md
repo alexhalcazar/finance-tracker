@@ -440,3 +440,60 @@ On the submit function, this is where we can grab the login data that was used o
   "confirmPassword": "testPassword;"
 }
 ```
+
+## Testing
+
+### Vitest
+
+Due to incompatibility issues, [vitest](https://vitest.dev/) is being used front end unit testing.
+
+Below is all of the library testing libraries that is used to be enhanced or use other methods to interact with the React DOM to create unit tests.
+
+- [Parent Testing Library Family for Helper Libraries](https://testing-library.com/docs/)
+  - [React Testing Library Jest DOM](https://testing-library.com/docs/ecosystem-jest-dom/)
+  - [Testing Library User Event Helper Methods](https://testing-library.com/docs/user-event/intro/)
+
+#### Vitest Setup
+
+Please view this sample [Github Repo](https://github.com/vitest-dev/vitest/blob/main/examples/projects/packages/client/vitest.setup.ts), which was followed closely to setup Vitest in this repo.
+
+In the setup for this project, in the `package.json`the "test" script was added as such below to run the vitest command as offered in their [vitest guide](https://vitest.dev/guide/).
+
+```json
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "eslint .",
+  "preview": "vite preview",
+  "test": "vitest"
+},
+```
+
+Next in the `vite.config.js`, we need to add our setup files to initiate and wrap any other configuration options but as followed in their [vitest example repo](https://github.com/vitest-dev/vitest/blob/main/examples/projects/packages/client/vitest.setup.ts) we left with the minimal import of the `jest-dom` library in order to spin up a sample DOM for our ReactJSX tests to have.
+
+```javascript
+// vite.config.js
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./vitest.setup.js",
+    css: true,
+    resolve: {
+      alias: aliases,
+    },
+  },
+```
+
+#### Run Vitest Unit Tests
+
+To be able to run tests, please insert all tests with the following file formats. For example, taking a look at the root folder of `test`we have a `button.test.jsx`file where it includes all Button component unit tests.
+
+> File naming conventions should always be in `fileName.test.jsx`for vitest to pickup tests correctly
+
+To run the unit tests, after writing them, simply run the following command and they will appear a pass or fail in the CLI.
+
+```bash
+npm run test
+# or
+npm test
+```

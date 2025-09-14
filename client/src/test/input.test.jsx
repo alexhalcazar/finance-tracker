@@ -4,10 +4,6 @@ import { expect, test, describe, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { Input } from "@/components/ui/input";
 
-vi.mock("@/utils/cn", () => ({
-  cn: (...classes) => classes.filter(Boolean).flat().join(" "),
-}));
-
 describe("Input component", () => {
   test("renders input with basic props", () => {
     render(<Input placeholder="Enter text" />);

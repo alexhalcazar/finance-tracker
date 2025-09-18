@@ -1,4 +1,4 @@
-import { AuthForm } from "@/components/AuthForm";
+import { AuthForm } from "@/features/auth/AuthForm";
 import { Card } from "@/components/ui/Card";
 import { Link } from "react-router";
 

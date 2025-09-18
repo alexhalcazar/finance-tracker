@@ -1,25 +1,31 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
+@import "tailwindcss";
+
 :root {
-  /* app colors */
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
+  --primary-color: #125eaf;
+  --primary-foreground-color: #ffffff;
+  --secondary-color: #4e575f;
+  --secondary-foreground-color: #ffffff;
   --text-color: #1a1a1a;
-  --text-muted-color: #4c4c4c;
+  --text-muted-color: #4e575f;
   --error-color: #ef4444;
-  --primary-bg: #007bff;
+  --primary-bg: #125eaf;
   --secondary-bg: #374151;
   --white-bg: white;
   --accent-color: #e5e7eb;
-
-  /* other colors */
   --white-color: #d1d5db;
-
-  /* typography */
   --font-family: "Roboto", "Inter", -apple-system, BlinkMacSystemFont,
     "Segoe UI", system-ui, sans-serif;
+}
+
+@theme {
+  --color-primary: var(--primary-color);
+  --color-primary-foreground: var(--primary-foreground-color);
+  --color-secondary: var(--secondary-color);
+  --color-secondary-foreground: var(--secondary-foreground-color);
+  --color-muted: var(--text-muted-color);
 }
 
 body {

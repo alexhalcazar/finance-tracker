@@ -1,8 +1,35 @@
 import { AuthForm } from "@/features/auth/AuthForm";
 import { Card } from "@/components/ui/Card";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "@/features/auth/formSchema";
+import { useState } from "react";
 
 export function Register() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  //  Stateful register form object passed to authForm, default values denotes first page load and after "resets"
+  const registerForm = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+
+    try {
+      console.log("Login Data\n", data);
+    } catch (error) {
+      console.error("Login page error: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <main className="min-h-screen flex items-center justify-center ">
       <div className="max-w-md w-full space-y-8">
@@ -14,7 +41,12 @@ export function Register() {
         </div>
 
         <Card className="p-8 space-y-6">
-          <AuthForm className="auth-form" formType="register" />
+          <AuthForm
+            formType="register"
+            form={registerForm}
+            onSubmit={onSubmit}
+            isLoading={isLoading}
+          />
 
           <div className="text-center">
             <p className="text-sm text-muted">

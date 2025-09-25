@@ -1,5 +1,5 @@
 import knex from 'knex';
-import config from '../db/knexfile.js';
+import config from '#config';
 import 'dotenv/config';
 
 const environment = process.env.ENVIRONMENT || 'development';

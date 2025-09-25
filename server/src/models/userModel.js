@@ -1,4 +1,4 @@
-import db from '../db.js';
+import db from '#db/db.js';
 
 // passed in user object is inserted into the "users" table
 export const insertUser = async (userObj) => {
@@ -21,43 +21,42 @@ export const insertUser = async (userObj) => {
 
 // passed in updates object will update "users" table fields
 export const updateUserById = async (updates) => {
-    const { id, ...changes } = updates;
+    const { user_id, ...changes } = updates;
     // returning expects an array of strings
     const returnFields = Object.keys(changes);
     try {
         const [updatedUser] = await db('users')
-            .where({ id })
-            .update(updates)
-            .returning(['id', ...returnFields]);
+            .where({ user_id })
+            .update(changes)
+            .returning(['user_id', ...returnFields]);
         return updatedUser;
     } catch (error) {
-        console.error(`error updating user id:${id} in users table`);
+        console.error(`error updating user id:${user_id} in users table`);
+        throw error;
     }
 };
 
-// passed in user id will be deleted from "users" table
-export const deleteUserById = async (id) => {
+// passed in user id number will be deleted from "users" table
+export const deleteUserById = async (user_id) => {
     try {
         const [deletedUser] = await db('users')
-            .where({ id })
+            .where({ user_id })
             .del()
             .returning('*');
         return deletedUser;
     } catch (error) {
-        console.error(`user id:${id}`);
+        console.error(`user id:${user_id}`);
+        throw error;
     }
 };
 
-// selects user id from "users" table
-export const selectUserById = async (id) => {
+// pased in id number selects user id from "users" table
+export const selectUserById = async (user_id) => {
     try {
-        const user = await db
-            .select()
-            .table('users')
-            .where({ id })
-            .returning('*');
+        const [user] = await db('users').select('*').where({ user_id });
         return user;
     } catch (error) {
-        console.error(`error while trying to select user id:${id}`);
+        console.error(`error while trying to select user id:${user_id}`);
+        throw error;
     }
 };

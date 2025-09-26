@@ -5,7 +5,8 @@
     "main": "app.js",
     "type": "module",
     "scripts": {
-        "dev": "npx nodemon app.js"
+        "dev": "npx nodemon app.js",
+        "tests": "vitest"
     },
     "imports": {
         "#db/*.js": "./src/db/*.js",
@@ -20,6 +21,7 @@
         "express": "^4.21.0"
     },
     "devDependencies": {
-        "nodemon": "^3.1.7"
+        "nodemon": "^3.1.7",
+        "vitest": "^3.2.4"
     }
 }

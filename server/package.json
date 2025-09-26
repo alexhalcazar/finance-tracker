@@ -1,20 +1,25 @@
 {
-  "name": "finance-tracker-backend",
-  "version": "1.0.0",
-  "description": "meal planner application",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "dev": "npx nodemon app.js"
-  },
-  "author": "jesus-perez",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^1.7.7",
-    "dotenv": "^16.6.1",
-    "express": "^4.21.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.7"
-  }
+    "name": "finance-tracker-backend",
+    "version": "1.0.0",
+    "description": "meal planner application",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "dev": "npx nodemon app.js"
+    },
+    "imports": {
+        "#db/*.js": "./src/db/*.js",
+        "#models/*.js": "./src/models/*.js",
+        "#config": "./knexfile.js"
+    },
+    "author": "jesus-perez",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.7.7",
+        "dotenv": "^16.6.1",
+        "express": "^4.21.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.7"
+    }
 }

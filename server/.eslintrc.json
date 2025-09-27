@@ -1,0 +1,6 @@
+{
+  "extends": ["eslint:recommended", "prettier"],
+  "rules": {
+    "no-unused-vars": ["error", { "varsIgnorePattern": "^[A-Z_]" }]
+  }
+}

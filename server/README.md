@@ -6,10 +6,10 @@ To simplify imports and avoid long relative paths, this project uses **module pa
 
 ```js
 // instead of a long relative path
-import user from '../../models/user.js';
+import user from "../../models/user.js";
 
 // Use the alias
-import user from '#models/user';
+import user from "#models/user";
 ```
 
 ### Setting up Aliases

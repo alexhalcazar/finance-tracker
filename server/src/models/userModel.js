@@ -1,4 +1,4 @@
-import db from '#db/db.js';
+import db from '#db';
 
 // passed in user object is inserted into the "users" table
 export const insertUser = async (userObj) => {

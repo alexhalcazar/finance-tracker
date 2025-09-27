@@ -9,7 +9,7 @@
         "tests": "vitest"
     },
     "imports": {
-        "#db/*.js": "./src/db/*.js",
+        "#db": "./src/db/db.js",
         "#models/*.js": "./src/models/*.js",
         "#config": "./knexfile.js"
     },

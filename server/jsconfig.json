@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "#db/*.js": ["./src/db/*.js"],
-            "#models/*.js": ["./src/models/*.js"],
-            "#config": ["./knexfile.js"]
-        }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#db/*.js": ["./src/db/*.js"],
+      "#models/*.js": ["./src/models/*.js"],
+      "#config": ["./knexfile.js"]
     }
+  }
 }

@@ -1,3 +1,30 @@
+## Server Project Directory Overview
+
+```text
+server/
+├── .env.example
+├── .eslintrc.json
+├── .gitignore
+├── app.js
+├── jsconfig.json
+├── knexfile.js
+├── migrations/
+│   └── 20250911043125_initial_schema.js
+├── package-lock.json
+├── package.json
+├── README.md
+├── server/
+├── src/
+│   ├── db/
+│   │   └── db.js
+│   └── models/
+│       └── userModel.js
+├── tests/
+│   └── db/
+│       └── userModel.test.js
+└── vite.config.js
+```
+
 ## Module Path Aliases
 
 To simplify imports and avoid long relative paths, this project uses **module path aliases**.

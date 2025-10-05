@@ -4,6 +4,8 @@ export default defineConfig({
   test: {
     alias: {
       "#db": resolve("./src/db/db.js"),
+      "#models": resolve("./src/models"),
+      "#config": resolve("./knexfile.js"),
     },
   },
 });

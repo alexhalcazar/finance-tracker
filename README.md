@@ -77,10 +77,10 @@ Defined in `server/src/utils/hash.js`:
 
 The bcrypt cost factor (number of salt rounds) can be configured via environment variables:
 
-````env
+```env
 # .env
 BCRYPT_ROUNDS=12
-
+```
 
 ### JWT Middleware (Server)
 
@@ -91,13 +91,29 @@ BCRYPT_ROUNDS=12
   - Allows request through and sets `req.user` if valid
 
 ### File
+
 `server/src/middleware/jwt.js`
 
 ### Example
+
 ```js
 import { verifyToken } from "./src/middleware/jwt.js";
 
 app.get("/api/private", verifyToken, (req, res) => {
   res.json({ message: `Welcome, ${req.user?.email || "user"}!` });
 });
-````
+```
+
+### Test
+
+```bash
+# public
+curl -i http://localhost:8080/api/ping
+
+# protected (expect 401 without token)
+curl -i http://localhost:8080/api/dummy
+
+# with a valid access token
+curl -i http://localhost:8080/api/dummy \
+  -H "Authorization: Bearer <your_access_token>"
+```

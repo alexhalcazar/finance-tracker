@@ -58,27 +58,46 @@ npm run dev
 
 Now go to https://localhost:3030 to view the front end which is React.js using Vite and React router.
 
-
 ## Authentication Utilities
 
 We use [bcryptjs](https://www.npmjs.com/package/bcryptjs) in the backend for password security.
 
-- Passwords are never stored in plain text.  
-- Each password is **hashed with a unique salt** before being saved in the database.  
+- Passwords are never stored in plain text.
+- Each password is **hashed with a unique salt** before being saved in the database.
 - Login attempts are verified by comparing the plain password with the stored hash.
 
 ### Hashing Functions
 
 Defined in `server/src/utils/hash.js`:
 
-- `hashPassword(plain)` -> hashes a plain-text password (returns a bcrypt hash string).  
-- `verifyPassword(plain, hashed)` -> verifies a plain password against a stored hash.  
+- `hashPassword(plain)` -> hashes a plain-text password (returns a bcrypt hash string).
+- `verifyPassword(plain, hashed)` -> verifies a plain password against a stored hash.
 
 ### Configuration
 
 The bcrypt cost factor (number of salt rounds) can be configured via environment variables:
 
-```env
+````env
 # .env
 BCRYPT_ROUNDS=12
 
+
+### JWT Middleware (Server)
+
+- **Env**: set `JWT_ACCESS_SECRET` in `server/.env`
+- **Header**: `Authorization: Bearer <access_token>`
+- **Behavior**:
+  - 401 if token missing/invalid/expired
+  - Allows request through and sets `req.user` if valid
+
+### File
+`server/src/middleware/jwt.js`
+
+### Example
+```js
+import { verifyToken } from "./src/middleware/jwt.js";
+
+app.get("/api/private", verifyToken, (req, res) => {
+  res.json({ message: `Welcome, ${req.user?.email || "user"}!` });
+});
+````

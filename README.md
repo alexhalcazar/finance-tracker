@@ -57,3 +57,28 @@ npm run dev
 ```
 
 Now go to https://localhost:3030 to view the front end which is React.js using Vite and React router.
+
+
+## Authentication Utilities
+
+We use [bcryptjs](https://www.npmjs.com/package/bcryptjs) in the backend for password security.
+
+- Passwords are never stored in plain text.  
+- Each password is **hashed with a unique salt** before being saved in the database.  
+- Login attempts are verified by comparing the plain password with the stored hash.
+
+### Hashing Functions
+
+Defined in `server/src/utils/hash.js`:
+
+- `hashPassword(plain)` -> hashes a plain-text password (returns a bcrypt hash string).  
+- `verifyPassword(plain, hashed)` -> verifies a plain password against a stored hash.  
+
+### Configuration
+
+The bcrypt cost factor (number of salt rounds) can be configured via environment variables:
+
+```env
+# .env
+BCRYPT_ROUNDS=12
+

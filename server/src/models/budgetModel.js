@@ -8,12 +8,22 @@ class Budget {
     this.tableName = tableName;
   }
 
-  // findAll budgets in the database by optional passed user id
-  async findAll(user_id) {
+  /* findAll budgets with required user id.
+   * If there is a limit then we limit results
+   * Ohterwise we will return all budgets tied to the user*/
+  async findAll(user_id, limitCount) {
     if (user_id) {
       return await db(this.tableName).where({ user_id }).select("*");
     }
-    return await db(this.tableName).select("*");
+
+    if (limitCount) {
+      return await db(this.tableName)
+        .where({ user_id })
+        .select("*")
+        .limit(limitCount);
+    }
+
+    return await db(this.tableName).where({ user_id }).select("*");
   }
 
   // findByName finds the budget in the database by passed user id and the category name

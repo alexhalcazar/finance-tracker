@@ -31,4 +31,9 @@ export default defineConfig({
       alias: aliases,
     },
   },
+  server: {
+    proxy: {
+      "/api": "http://localhost:8080",
+    },
+  },
 });

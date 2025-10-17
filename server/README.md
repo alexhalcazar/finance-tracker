@@ -17,11 +17,20 @@ server/
 ├── src/
 │   ├── db/
 │   │   └── db.js
-│   └── models/
-│       └── userModel.js
-├── tests/
-│   └── db/
-│       └── userModel.test.js
+│   ├── middleware
+│   │   └── jwt.js
+│   ├── models
+│   │   ├── budgetModel.js
+│   │   ├── categoryModel.js
+│   │   └── userModel.js
+│   ├── routes
+│   │   └── dummy.js
+│   ├── seeds
+│   │   ├── 01_users.js
+│   │   ├── 02_budgets.js
+│   │   └── 03_categories.js
+│   └── utils
+│       └── hash.js
 └── vite.config.js
 ```
 
@@ -69,3 +78,74 @@ To provide editor support (autocomplete, go-to-definition, and error checking in
   }
 }
 ```
+
+## Plaid Installation
+
+This application interacts with Plaid's API to allow users to securely connect their banks. Plaid's API requires authentication credentials to be stored securely in environment variables.
+
+To run this project each developer needs their own Plaid developer account and API credentials.
+
+### 1. Create a Plaid Developer Account
+
+-Go to https://dashboard.plaid.com/signup
+-Sign up for a free developer account.
+-Once logged in, navigate to the Keys section in the Plaid dashboard.
+-You’ll find your Client ID and Sandbox Secret there.
+-The Sandbox environment provides fake institutions and test data — it’s safe for local testing.
+
+### 2. Set up Environment Variables
+
+Create a .env file at the root directory and add the following variables:
+
+```
+bash
+
+PLAID_CLIENT_ID=
+PLAID_SECRET=
+PLAID_ENV=
+```
+
+### 3. Run the Project
+
+Once your .env is set up, install dependencies and start the developement server
+
+```
+bash
+
+npm install
+npm run dev
+```
+
+## How This App Uses Plaid
+
+This application integrates with Plaid to allow users to securely connect their bank accounts and view transactions. To simplify the development process, we use:
+
+### 1. Plaid Node Library
+
+Handles server-side API calls like:
+-Creating link tokens
+-Exchanging public tokens for access tokens
+-Fetching transactions and account data
+Simplifies raw HTTP requests by providing a structured, promise-based interface.
+Keeps sensitive keys (client_id and secret) safely on the backend.
+
+reference: https://github.com/plaid/plaid-node
+
+### 2. React-Plaid-Link
+
+Handles client-side authentication in React.
+Provides a ready-made UI component for the Plaid Link flow (popup modal for bank login).
+Works seamlessly with the backend to receive link tokens and exchange them for user access tokens.
+Makes it easy to integrate Plaid into a React dashboard or other UI components.
+
+reference: https://www.npmjs.com/package/react-plaid-link/v/2.1.2
+
+### Flow Summary
+
+1. Frontend requests a link token from your backend.
+2. React-Plaid-Link uses this token to open the bank connection popup.
+3. User completes login → Plaid returns a public token.
+4. Backend exchanges the public token for an access token (stored securely).
+5. Access token is used for further API calls like fetching transactions.
+
+To learn more: https://plaid.com/docs/quickstart/

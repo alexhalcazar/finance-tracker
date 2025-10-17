@@ -23,7 +23,7 @@ export const LatestTransactions = () => {
       console.error("Could not retrieve transactions:", err);
     }
   };
-  //space-y-4
+
   return (
     <div className={"flex flex-col items-start"}>
       <Button onClick={handleClick}>Get transactions</Button>

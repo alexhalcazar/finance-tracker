@@ -10,8 +10,12 @@
   },
   "imports": {
     "#db": "./src/db/db.js",
-    "#models/*.js": "./src/models/*.js",
-    "#config": "./knexfile.js"
+    "#models/*": "./src/models/*.js",
+    "#config": "./knexfile.js",
+    "#plaid": "./src/config/plaid.js",
+    "#controllers/*": "./src/controllers/*.js",
+    "#routes/api/*": "./src/routes/api/*.js",
+    "#services/*": "./src/services/*.js"
   },
   "author": "jesus-perez",
   "license": "ISC",
@@ -20,7 +24,9 @@
     "dotenv": "^16.6.1",
     "express": "^4.21.0",
     "knex": "^3.1.0",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "moment": "^2.30.1",
+    "plaid": "^39.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",

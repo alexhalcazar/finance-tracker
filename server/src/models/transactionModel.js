@@ -36,6 +36,14 @@ class Transaction {
     return await transaction;
   }
 
+  // findByUserId queries transactions by the passed in user_id
+  async findByUserId(user_id) {
+    return await db(this.tableName)
+      .join("budgets", "transactions.budget_id", "budgets.budget_id")
+      .where("budgets.user_id", user_id)
+      .select("transactions.*");
+  }
+
   /**
    *
    * @typedef {Object} transaction_data

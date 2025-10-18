@@ -85,5 +85,5 @@ class Transaction {
 }
 
 const tableName = "transactions";
-const transaction = Transaction(tableName);
+const transaction = new Transaction(tableName);
 export default transaction;

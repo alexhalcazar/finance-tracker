@@ -15,7 +15,7 @@ class Transaction {
    * @param {Object} limit - limit option to query based on a count
    */
   async findAll(filters, limitCount) {
-    if (filters && limit) {
+    if (filters && limitCount) {
       return await db(this.tableName)
         .where(filters)
         .limit(limitCount)
@@ -26,14 +26,12 @@ class Transaction {
       return await db(this.tableName).where(filters).select("*");
     }
 
-    return await query.select("*");
+    return await db(this.tableName).select("*");
   }
 
   // findById will try to find the transaction by the transaction id
   async findById(transaction_id) {
-    const [transaction] = db(this.tableName).where({ transaction_id }).first();
-
-    return await transaction;
+    return await db(this.tableName).where({ transaction_id }).first();
   }
 
   // findByUserId queries transactions by the passed in user_id
@@ -55,7 +53,9 @@ class Transaction {
    * @property {timestamp_date} updated_at - Timestamp date when the transaction was updated on
    */
   async insert(transaction_data) {
-    const [transaction] = await db(this.tableName).insert({ transaction_data });
+    const [transaction] = await db(this.tableName)
+      .insert({ transaction_data })
+      .returning("*");
     return transaction;
   }
 
@@ -73,7 +73,9 @@ class Transaction {
   async update(transaction_id, transaction_updates) {
     const [updated_transaction] = await db(this.tableName)
       .where({ transaction_id })
-      .update({ transaction_updates });
+      .update({ transaction_updates })
+      .returning("*");
+
     return updated_transaction;
   }
 

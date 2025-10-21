@@ -4,7 +4,11 @@
     "paths": {
       "#db/*.js": ["./src/db/*.js"],
       "#models/*.js": ["./src/models/*.js"],
-      "#config": ["./knexfile.js"]
+      "#config": ["./knexfile.js"],
+      "#plaid": ["./src/config/plaid.js"],
+      "#controllers": ["./src/controllers/*.js"],
+      "#routes/api/": ["./src/routes/api/"],
+      "#services": ["./src/services/"]
     }
   }
 }

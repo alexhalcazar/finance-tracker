@@ -34,11 +34,12 @@ class Transaction {
     return await db(this.tableName).where({ transaction_id }).first();
   }
 
-  // findByUserId queries transactions by the passed in user_id
-  async findByUserId(user_id) {
+  // findByUserId queries transactions by the passed in user_id limited by passed in limitCount
+  async findByUserId(user_id, limitCount) {
     return await db(this.tableName)
       .join("budgets", "transactions.budget_id", "budgets.budget_id")
       .where("budgets.user_id", user_id)
+      .limit(limitCount)
       .select("transactions.*");
   }
 

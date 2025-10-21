@@ -22,11 +22,20 @@ class Transaction {
         .select("*");
     }
 
-    if (filters) {
-      return await db(this.tableName).where(filters).select("*");
+    if (filters && limitCount) {
+      return await db(this.tableName)
+        .where(filters)
+        .limit(limitCount)
+        .select("*");
     }
 
-    return await db(this.tableName).select("*");
+    if (!filters) {
+      throw new Error(
+        "findAll for transactions must contain at least a 'filters' argument."
+      );
+    }
+
+    return await db(this.tableName).where(filters).select("*");
   }
 
   // findById will try to find the transaction by the transaction id

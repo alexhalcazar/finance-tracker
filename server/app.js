@@ -1,8 +1,8 @@
 import express from "express";
 import { verifyToken } from "./src/middleware/jwt.js";
-import dummyRouter from "./src/routes/dummy.js";
-import bankRouter from "#routes/api/bank";
-import plaidRouter from "#routes/api/plaid";
+import dummyRouter from "#routes/dummy";
+import bankRouter from "#routes/bank";
+import plaidRouter from "#routes/plaid";
 
 const app = express();
 const PORT = 8080;

@@ -14,7 +14,7 @@
     "#config": "./knexfile.js",
     "#plaid": "./src/config/plaid.js",
     "#controllers/*": "./src/controllers/*.js",
-    "#routes/api/*": "./src/routes/api/*.js",
+    "#routes/*": "./src/routes/*.js",
     "#services/*": "./src/services/*.js"
   },
   "author": "jesus-perez",

@@ -2,7 +2,7 @@ import { AddExpenseForm } from "@/features/expenses/AddExpenseForm";
 import { Card } from "@/components/ui/Card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addExpenseSchema } from "@/features/auth/formSchema";
+import { addExpenseSchema } from "@/formSchemas/allFormSchemas";
 import { useState } from "react";
 
 export function AddExpense() {

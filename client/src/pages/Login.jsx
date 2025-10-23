@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { Card } from "@/components/ui/Card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/features/auth/formSchema";
+import { loginSchema } from "@/formSchemas/allFormSchemas";
 import { useState } from "react";
 
 export function Login() {

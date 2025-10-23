@@ -14,7 +14,7 @@
     "#config": "./knexfile.js",
     "#plaid": "./src/config/plaid.js",
     "#controllers/*": "./src/controllers/*.js",
-    "#routes/api/*": "./src/routes/api/*.js",
+    "#routes/*": "./src/routes/*.js",
     "#services/*": "./src/services/*.js"
   },
   "author": "jesus-perez",
@@ -23,6 +23,7 @@
     "axios": "^1.7.7",
     "dotenv": "^16.6.1",
     "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
     "pg": "^8.16.3",
     "moment": "^2.30.1",

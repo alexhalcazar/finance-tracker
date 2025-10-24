@@ -22,6 +22,7 @@ export const createLinkToken = async (user_id) => {
       "Error getting Plaid token:",
       err.response?.data || err.message
     );
+    throw new Error("Error getting Plaid token");
   }
 };
 
@@ -44,6 +45,7 @@ export const setAccessToken = async (publicToken) => {
       "Could not exchange public token for access token:",
       err.response?.data || err.message
     );
+    throw new Error("Error exchanging public token for access token");
   }
 };
 
@@ -69,5 +71,6 @@ export const fetchTransactions = async (user_id, days = 30) => {
       "Could not get transactions from Plaid:",
       err.response?.data || err.message
     );
+    throw new Error("Error getting transactions from Plaid");
   }
 };

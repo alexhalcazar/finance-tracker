@@ -1,18 +1,22 @@
 import express from "express";
 import { verifyToken } from "./src/middleware/jwt.js";
-import dummyRouter from "./src/routes/dummy.js";
+import dummyRouter from "#routes/dummy";
+import bankRouter from "#routes/bank";
+import plaidRouter from "#routes/plaid";
 
 const app = express();
 const PORT = 8080;
 
 app.use(express.json());
 
-
 // Public ping (no auth)
 app.get("/api/ping", (_req, res) => res.json({ ok: true }));
 
 // Protected dummy router: GET /api/dummy
 app.use("/api/dummy", verifyToken, dummyRouter);
+
+app.use("/api/bank", bankRouter);
+app.use("/api/plaid", plaidRouter);
 
 app.listen(PORT, async () => {
   //  can use any database later on to initiate the connection here

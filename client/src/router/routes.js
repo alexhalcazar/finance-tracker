@@ -3,6 +3,7 @@ import App from "@/App";
 import { Login } from "@/pages/Login";
 import { Register } from "@/pages/Register";
 import { AddExpense } from "@/pages/AddExpense";
+import { Dashboard } from "@/pages/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "add-expense", // ✅ new route
         Component: AddExpense,
+      },
+      {
+        path: "dashboard",
+        Component: Dashboard,
       },
     ],
   },

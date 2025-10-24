@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/Card";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "@/features/auth/formSchema";
+import { registerSchema } from "@/formSchemas/allFormSchemas";
 import { useState } from "react";
 
 export function Register() {

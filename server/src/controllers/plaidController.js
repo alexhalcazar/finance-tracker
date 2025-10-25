@@ -11,7 +11,7 @@ export const getLinkToken = async (req, res) => {
   try {
     const link_token = await createLinkToken(user_id);
     res.json(link_token);
-  } catch (error) {
+  } catch (err) {
     res
       .status(500)
       .json({ error: "Error getting creating link token from Plaid API" });
@@ -25,5 +25,8 @@ export const exchangeLinkToken = async (req, res) => {
     res.json(response);
   } catch (err) {
     console.error("Error exchanging link token from Plaid API");
+    res
+      .status(500)
+      .json({ error: "Error exchanging link token from Plaid API" });
   }
 };

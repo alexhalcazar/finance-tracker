@@ -15,22 +15,36 @@ server/
 ├── README.md
 ├── server/
 ├── src/
+│   ├── config/
+│   │   └── plaid.js
+│   ├── controllers/
+│   │   ├── bankController.js
+│   │   └── plaidController.js
 │   ├── db/
 │   │   └── db.js
-│   ├── middleware
+│   ├── middleware/
 │   │   └── jwt.js
-│   ├── models
+│   ├── models/
 │   │   ├── budgetModel.js
 │   │   ├── categoryModel.js
 │   │   └── userModel.js
-│   ├── routes
-│   │   └── dummy.js
-│   ├── seeds
+│   ├── routes/
+│   │   ├── bank.js
+│   │   ├── dummy.js
+│   │   └── plaid.js
+│   ├── seeds/
 │   │   ├── 01_users.js
 │   │   ├── 02_budgets.js
 │   │   └── 03_categories.js
-│   └── utils
+│   ├── services/
+│   │   └── plaidService.js
+│   └── utils/
 │       └── hash.js
+├── tests/
+│   ├── db/
+│   │   └── userModel.test.js
+│   └── models/
+│       └── categoryModel.test.js
 └── vite.config.js
 ```
 

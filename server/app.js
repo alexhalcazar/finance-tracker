@@ -1,6 +1,8 @@
+import "dotenv/config";
 import express from "express";
 import { verifyToken } from "./src/middleware/jwt.js";
 import dummyRouter from "#routes/dummy";
+import authRouter from "./src/routes/auth.js";
 import bankRouter from "#routes/bank";
 import plaidRouter from "#routes/plaid";
 
@@ -11,6 +13,9 @@ app.use(express.json());
 
 // Public ping (no auth)
 app.get("/api/ping", (_req, res) => res.json({ ok: true }));
+
+// Auth routes (public - no token required)
+app.use("/api/auth", authRouter);
 
 // Protected dummy router: GET /api/dummy
 app.use("/api/dummy", verifyToken, dummyRouter);

@@ -4,6 +4,9 @@ import { Login } from "@/pages/Login";
 import { Register } from "@/pages/Register";
 import { AddExpense } from "@/pages/AddExpense";
 import { Dashboard } from "@/pages/Dashboard";
+import { Transactions } from "@/pages/Transactions";
+import { Account } from "@/pages/Account";
+import { Budgets } from "@/pages/Budgets";
 
 const router = createBrowserRouter([
   {
@@ -17,14 +20,24 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "add-expense", // ✅ new route
-        Component: AddExpense,
-      },
-      {
         path: "dashboard",
         Component: Dashboard,
+      },
+      {
+        path: "transactions",
+        Component: Transactions,
+      },
+      { path: "transactions/add-expense", Component: AddExpense },
+      {
+        path: "budgets",
+        Component: Budgets,
+      },
+      {
+        path: "account",
+        Component: Account,
       },
     ],
   },
 ]);
+
 export default router;

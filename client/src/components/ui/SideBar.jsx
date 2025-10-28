@@ -1,23 +1,22 @@
 import { cn } from "@utils/cn";
-import logo from "@assets/logo.png";
+import { NavLink } from "react-router";
 
-export const Sidebar = ({ sideBarType, className = "" }) => {
-  // Sidebar characteristics determined options
-  const sideBarOptions = {
-    dashboard: {
-      image: logo,
-      items: ["transactions", "budgets", "expenses"],
-    },
-  };
-
+export const Sidebar = ({ logo, items, className = "" }) => {
   return (
     <nav className={cn("flex flex-col items-center m-4", className)}>
-      {sideBarOptions[sideBarType]?.["image"] && (
-        <img src={logo} className="mb-6" />
-      )}
+      {logo && <img src={logo} className="mb-6" />}
       <ul className="space-y-4 mt-10">
-        {sideBarOptions[sideBarType]?.["items"].map((item, index) => (
-          <li key={index}>{item}</li>
+        {items.map((item, index) => (
+          <li key={index}>
+            <NavLink
+              to={item.path}
+              className={({ isActive }) =>
+                isActive ? "text-red-500" : "text-black"
+              }
+            >
+              {item.name}
+            </NavLink>
+          </li>
         ))}
       </ul>
     </nav>

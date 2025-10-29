@@ -60,3 +60,35 @@ export const selectUserById = async (user_id) => {
     throw error;
   }
 };
+
+/**
+ * Find a user by email address
+ * Used for login and checking duplicate emails during registration
+ * @param {string} email - User's email address
+ * @returns {Promise<object|undefined>} User object or undefined if not found
+ */
+export const selectUserByEmail = async (email) => {
+  try {
+    const [user] = await db("users").select("*").where({ email });
+    return user;
+  } catch (error) {
+    console.error(`error while trying to select user by email: ${email}`);
+    throw error;
+  }
+};
+
+/**
+ * Find a user by username
+ * Used for checking duplicate usernames during registration
+ * @param {string} username - User's username
+ * @returns {Promise<object|undefined>} User object or undefined if not found
+ */
+export const selectUserByUsername = async (username) => {
+  try {
+    const [user] = await db("users").select("*").where({ username });
+    return user;
+  } catch (error) {
+    console.error(`error while trying to select user by username: ${username}`);
+    throw error;
+  }
+};

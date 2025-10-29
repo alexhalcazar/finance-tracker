@@ -1,9 +1,7 @@
 import { createLinkToken, setAccessToken } from "#services/plaidService";
-// import { verifyToken }
 
-// apply middleware to grab user_id
 export const getLinkToken = async (req, res) => {
-  // const { user_id } = req.body;
+  // const { user_id } = req.user.user_id;
 
   // placeholder
   const user_id = 1;

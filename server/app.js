@@ -16,7 +16,7 @@ app.get("/api/ping", (_req, res) => res.json({ ok: true }));
 app.use("/api/dummy", verifyToken, dummyRouter);
 
 app.use("/api/bank", verifyToken, bankRouter);
-app.use("/api/plaid", plaidRouter);
+app.use("/api/plaid", verifyToken, plaidRouter);
 
 app.listen(PORT, async () => {
   //  can use any database later on to initiate the connection here

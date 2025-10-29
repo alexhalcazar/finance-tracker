@@ -1,11 +1,10 @@
-// client/src/components/ui/logout.jsx
-import { useNavigate } from 'react-router';  // Changed from 'react-router-dom' to 'react-router'
-import { logout } from '../../utils/auth';
-import { Button } from './button';
+import { useNavigate } from "react-router";
+import { logout } from "../../utils/auth.js";
+import { Button } from "./Button.jsx";
 
 /**
  * LogoutButton Component
- * 
+ *
  * Handles user logout by clearing authentication tokens and redirecting to login page.
  * Uses the existing Button component for consistent styling across the app.
  */
@@ -51,6 +50,19 @@ const LogoutButton = () => {
       size="default"
       onClick={handleLogout}
     >
+   * 1. Removes JWT token from localStorage/sessionStorage
+   * 2. Redirects user to the login page
+   */
+  const handleLogout = () => {
+    // Remove the JWT token from storage
+    logout();
+
+    // Redirect to login page
+    navigate("/Login");
+  };
+
+  return (
+    <Button variant="outline" size="default" onClick={handleLogout}>
       Logout
     </Button>
   );

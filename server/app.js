@@ -15,7 +15,7 @@ app.get("/api/ping", (_req, res) => res.json({ ok: true }));
 // Protected dummy router: GET /api/dummy
 app.use("/api/dummy", verifyToken, dummyRouter);
 
-app.use("/api/bank", bankRouter);
+app.use("/api/bank", verifyToken, bankRouter);
 app.use("/api/plaid", plaidRouter);
 
 app.listen(PORT, async () => {

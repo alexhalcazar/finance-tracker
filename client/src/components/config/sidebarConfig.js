@@ -15,4 +15,5 @@ export const transactionLogo = sidebarTransactionLogo;
 export const budgetsLogo = sidebarBudgetLogo;
 export const accountLogo = sidebarAccountLogo;
 
-export const sideBarClass = "bg-gray-300 rounded-xl shadow-md p-4 w-64";
+export const sideBarClass =
+  "bg-gray-300 sm:min-w-3xs border border-muted rounded-xl shadow-md";

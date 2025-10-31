@@ -4,6 +4,7 @@ import {
   sidebarItems,
   sideBarClass,
 } from "@/components/config/sidebarConfig";
+import { Card } from "@/components/ui/Card";
 
 export const Budgets = () => {
   return (
@@ -13,6 +14,7 @@ export const Budgets = () => {
         items={sidebarItems}
         className={sideBarClass}
       />
+      <Card className="m-4 p-4 flex-1 bg-gray-300 rounded-lg"></Card>
     </main>
   );
 };

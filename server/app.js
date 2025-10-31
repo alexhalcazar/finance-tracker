@@ -20,8 +20,8 @@ app.use("/api/auth", authRouter);
 // Protected dummy router: GET /api/dummy
 app.use("/api/dummy", verifyToken, dummyRouter);
 
-app.use("/api/bank", bankRouter);
-app.use("/api/plaid", plaidRouter);
+app.use("/api/bank", verifyToken, bankRouter);
+app.use("/api/plaid", verifyToken, plaidRouter);
 
 app.listen(PORT, async () => {
   //  can use any database later on to initiate the connection here

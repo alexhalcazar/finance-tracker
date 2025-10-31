@@ -1,20 +1,20 @@
 import { fetchTransactions } from "#services/plaidService";
-// import { verifyToken }
 
-// apply middleware to grab user_id
 export const getTransactions = async (req, res) => {
-  // const { user_id } = res.body;
-
-  // placeholder
-  const user_id = 1;
+  const { user_id } = req.user.user_id;
 
   try {
+    // TODO: fetch the Plaid access_token from DB using the user_id
+    // const access_token = await getAccessToken(user_id);
+
+    // place holder
+    const access_token = null;
     // can pass in amount of days
-    const transactions = await fetchTransactions(user_id);
+    const transactions = await fetchTransactions(access_token);
     res.json(transactions);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error fetching transactions from Plaid APi" });
+      .json({ error: "Error fetching transactions from Plaid API" });
   }
 };

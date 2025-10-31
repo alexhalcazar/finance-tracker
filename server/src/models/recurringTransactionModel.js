@@ -30,7 +30,7 @@ class RecurringTransaction {
 
   // findById will try to find the transaction by the recurring_id
   async findById(recurring_id) {
-    if (!recurringId) {
+    if (!recurring_id) {
       throw new Error("findById must contain a 'recurring_id' argument");
     }
 

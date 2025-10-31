@@ -31,7 +31,14 @@ export const fetchLinkToken = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     const data = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        console.error(data.message);
+      }
+    }
     return data.link_token;
   } catch (err) {
     console.error("Backend call to create link token failed");

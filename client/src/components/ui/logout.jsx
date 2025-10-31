@@ -21,44 +21,27 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       // Call server logout endpoint (for audit logging)
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
       if (token) {
-        await fetch('http://localhost:8080/api/auth/logout', {
-          method: 'POST',
+        await fetch("http://localhost:8080/api/auth/logout", {
+          method: "POST",
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         });
         // Note: We don't care if this fails - we still logout client-side
       }
     } catch (error) {
       // Server call failed, but we still logout client-side
-      console.log('Server logout call failed, proceeding with client logout');
+      console.log("Server logout call failed, proceeding with client logout");
     } finally {
       // Always remove the token from storage
       logout();
-      
+
       // Redirect to login page
-      navigate('/auth/login');
+      navigate("/auth/login");
     }
-  };
-
-  return (
-    <Button
-      variant="outline"
-      size="default"
-      onClick={handleLogout}
-    >
-   * 1. Removes JWT token from localStorage/sessionStorage
-   * 2. Redirects user to the login page
-   */
-  const handleLogout = () => {
-    // Remove the JWT token from storage
-    logout();
-
-    // Redirect to login page
-    navigate("/Login");
   };
 
   return (

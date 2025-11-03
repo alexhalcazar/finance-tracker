@@ -69,8 +69,8 @@ class RecurringTransaction {
    */
   async update(recurring_id, recurring_transaction_updates) {
     const [updatedRecurringTransaction] = await db(this.tableName)
-      .where({ recurring_id })
-      .update({ recurring_transaction_updates })
+      .where(recurring_id)
+      .update(recurring_transaction_updates)
       .returning("*");
     return updatedRecurringTransaction;
   }

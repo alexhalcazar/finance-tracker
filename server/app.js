@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from "express";
-import { verifyToken } from "./src/middleware/jwt.js";
+import { verifyToken } from "#middleware/jwt";
 import dummyRouter from "#routes/dummy";
-import authRouter from "./src/routes/auth.js";
+import authRouter from "#routes/auth";
 import bankRouter from "#routes/bank";
 import plaidRouter from "#routes/plaid";
 

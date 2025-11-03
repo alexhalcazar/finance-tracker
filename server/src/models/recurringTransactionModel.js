@@ -50,7 +50,7 @@ class RecurringTransaction {
    */
   async insert(transaction_data) {
     const [transaction] = await db(this.tableName)
-      .insert({ transaction_data })
+      .insert(transaction_data)
       .returning("*");
     return transaction;
   }

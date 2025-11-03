@@ -39,7 +39,7 @@ class RecurringTransaction {
 
   /**
    *
-   * @typedef {Object} transaction_data
+   * @typedef {Object} recurring_transaction_data
    * @property {number} budget_id - Existing budget foreign key number the transaction belongs to
    * @property {number} category_id - Existing category foreign key number the transaction belongs to
    * @property {number} amount - Amount for this specific transaction
@@ -48,11 +48,11 @@ class RecurringTransaction {
    * @property {timestamp_date} end_date - Timestamp date when the transaction ends on
    * @property {string} note - optional note for this recurring transaction
    */
-  async insert(transaction_data) {
-    const [transaction] = await db(this.tableName)
-      .insert(transaction_data)
+  async insert(recurring_transaction_data) {
+    const [recurring_transaction] = await db(this.tableName)
+      .insert(recurring_transaction_data)
       .returning("*");
-    return transaction;
+    return recurring_transaction;
   }
 
   /**

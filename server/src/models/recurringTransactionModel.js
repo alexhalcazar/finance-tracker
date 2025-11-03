@@ -57,8 +57,10 @@ class RecurringTransaction {
 
   /**
    *
-   * @typedef {Object} transaction_data
-   * @property {number} transaction_id - Existing id for the
+   * @typedef {Object} transaction_data -> recurring_transaction_updates
+   * @property {number} transaction_id - id of the transaction
+   * @property {number} budget_id - id of the budget the recurring transaction belongs to
+   * @property {number} category_id - id of the category the recurring transaction belongs to
    * @property {number} amount - Amount for this specific transaction
    * @property {string} frequency - Frequency displays how frequent this transaction occurs
    * @property {timestamp_date} start_date - Timestamp date when the transaction started on

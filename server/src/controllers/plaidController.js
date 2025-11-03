@@ -1,10 +1,7 @@
 import { createLinkToken, setAccessToken } from "#services/plaidService";
 
 export const getLinkToken = async (req, res) => {
-  // const { user_id } = req.user.user_id;
-
-  // placeholder
-  const user_id = 1;
+  const { user_id } = req.user;
 
   try {
     const link_token = await createLinkToken(user_id);

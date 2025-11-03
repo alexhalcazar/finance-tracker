@@ -1,11 +1,17 @@
 export const fetchLatestTransactions = async (token, max = 5) => {
   const latestTransactions = [];
+  // placeholder pass access token for now but will need to fetch from backend
+  // will need to be a GET request not POST
+  const access_token = sessionStorage.getItem("access_token");
+
   try {
     const response = await fetch("/api/bank/transactions", {
-      method: "GET",
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({ access_token: access_token }),
     });
     const data = await response.json();
     for (let i = 0; i < Math.min(data.length, max); i++) {
@@ -35,9 +41,7 @@ export const fetchLinkToken = async (token) => {
     const data = await response.json();
 
     if (!response.ok) {
-      if (response.status === 401) {
-        console.error(data.message);
-      }
+      console.error(`Error ${response.status}`, data.message);
     }
     return data.link_token;
   } catch (err) {

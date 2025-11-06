@@ -5,6 +5,7 @@ import dummyRouter from "#routes/dummy";
 import authRouter from "./src/routes/auth.js";
 import bankRouter from "#routes/bank";
 import plaidRouter from "#routes/plaid";
+import budgets from "#routes/budgets";
 
 const app = express();
 const PORT = 8080;
@@ -22,8 +23,12 @@ app.use("/api/dummy", verifyToken, dummyRouter);
 
 app.use("/api/bank", verifyToken, bankRouter);
 app.use("/api/plaid", verifyToken, plaidRouter);
+app.use("/api/budgets", verifyToken, budgets);
 
-app.listen(PORT, async () => {
-  //  can use any database later on to initiate the connection here
-  console.log(`Server is running on port: ${PORT}`);
-});
+if (["development", "production"].includes(process.env.ENVIRONMENT)) {
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+} else {
+  console.log("Server not started (test mode).");
+}
+
+export default app;

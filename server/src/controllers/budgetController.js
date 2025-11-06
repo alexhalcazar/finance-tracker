@@ -3,18 +3,17 @@ import budget from "#models/budgetModel";
 const createNewBudget = async (req, res) => {
   try {
     const { user_id } = req.user;
-    const { name, amount, category, period, start_date, end_date, currency } =
-      req.body;
+    const { name, start_date, end_date, currency } = req.body;
 
-    if (!amount || !category) {
+    if (!name) {
       return res.status(400).json({
-        error: "Amount and category are required",
+        error: "Budget name is required",
       });
     }
 
-    if (amount <= 0) {
+    if (!start_date || !end_date) {
       return res.status(400).json({
-        error: "Budget amount cannot be less than 0",
+        error: "Budget start_date and end date is required",
       });
     }
 
@@ -26,11 +25,10 @@ const createNewBudget = async (req, res) => {
       currency,
     };
 
-    const newBudget = budget.insert(budgetData);
+    const newBudget = await budget.insert(budgetData);
     return res.status(201).json({
       message: "Budget created successfully",
       newBudget,
-      s,
     });
   } catch (error) {
     return res.status(500).json({

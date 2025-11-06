@@ -203,6 +203,64 @@ npm run tests
 
 or
 
-```bash
+````bash
 yar tests
+## Financial Models
+
+### How to Use Financial Models
+
+All the financial models follow a similar pattern which details a similar pattern here:
+https://itnext.io/crafting-database-models-with-knex-js-and-postgresql-b3a74e789794
+
+All the models have their properties and types listed inside each model of what each parameter represents as well as what each returns. You may use these models when fleshing out API endpoints and or any other additional backend logic you need.
+
+#### Budget Model Examples
+
+findAll looks like this for the budget model and similar other models.
+
+```javascript
+// Get all budgets for user
+const userBudgets = await budget.findAll(123);
+
+// Get limited results
+const limitedBudgets = await budget.findAll(123, 5);
+````
+
+findByName takes in a user_id and a name then returns one budget associated with it.
+
+```javascript
+const personalBudget = await budget.findByName(123, "Personal Budget");
+```
+
+findById takes in the budget id (for each model it will be the main primary key) and returns one budget record.
+
+```javascript
+const budgetDetails = await budget.findById(123);
+```
+
+insert will take in the object that the model expects and inserts a new record into the database, for example below is the a new budget being inserted.
+
+```javascript
+const newBudget = await budget.insert({
+  user_id: 245,
+  name: "Vacation Fund",
+  start_date: new Date("2025-01-01"),
+  end_date: new Date("2025-12-31"),
+  currency: "USD",
+});
+```
+
+update will update the object with whichever properties and values you pass in as an object, alongside the main primary id you want to update for.
+
+```javascript
+const updatedBudget = await budget.update(123, {
+  name: "Updated Vacation Fund",
+  end_date: new Date("2026-12-31"),
+});
+```
+
+delete will delete the object with the passed in primary id of that model.
+
+```javascript
+const deletedBudget = await budget.delete(123);
 ```

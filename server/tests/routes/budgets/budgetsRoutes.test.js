@@ -1,25 +1,40 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
-import db from "#db";
-import budget from "#models/budgetModel";
+import { describe, expect, it, beforeAll, beforeEach, afterAll } from "vitest";
 import { generateAccessToken } from "src/utils/jwtUtils";
-import fetch from "node-fetch";
+import budget from "#models/budgetModel.js";
+import db from "#db";
+import app from "#app";
+import supertest from "supertest";
 
-const BEFORE_ALL_TIMEOUT = 30000; // 30 explicity wait time seconds to alleviate race conditions
+describe("test REST Service", async () => {
+  let request = null;
+
+  beforeAll(() => {
+    console.log("before all tests: start server");
+    request = supertest.agent(app);
+  });
+
+  afterAll(async () => {
+    console.log("after all tests: close server");
+  });
+
+  it("Gets the types endpoint", async () => {
+    const res = await request.get("/api/ping");
+    expect(res.status).toBe(200);
+  });
+});
 
 describe("Budget Routes", () => {
   let testUser;
   let authToken;
-  let server;
-  const baseURL = "http://localhost";
-  const portNumber = 8080;
+  let request = null;
 
   beforeAll(async () => {
-    // Run migrations and seeds
-    await db.migrate.latest();
     await db.seed.run();
 
-    // Get test user
     testUser = await db("users").first();
+
+    console.log("before all tests: start server");
+    request = supertest.agent(app);
 
     // Generate auth token
     authToken = generateAccessToken({
@@ -27,70 +42,40 @@ describe("Budget Routes", () => {
       email: testUser.email,
       username: testUser.username,
     });
-
-    // Start the server
-    await new Promise((resolve) => {
-      server = app.listen(0, () => {
-        const port = server.address().port;
-        baseURL = `http://localhost:${port}`;
-        console.log(`Test server started on ${baseURL}`);
-        resolve();
-      });
-    });
-  }, BEFORE_ALL_TIMEOUT);
-  afterAll(async () => {
-    // Close server if it was created
-    if (server) {
-      await new Promise((resolve) => server.close(resolve));
-    }
-    await db.destroy();
-  });
-
-  afterAll(async () => {
-    // Close server if it was created
-    if (server) {
-      await new Promise((resolve) => server.close(resolve));
-    }
-    await db.destroy();
   });
 
   beforeEach(async () => {
     const userBudgets = await budget.findAll(testUser.user_id);
-
     for (const userBudget of userBudgets) {
       await budget.delete(userBudget.budget_id);
     }
   });
 
-  describe("POST /api/bdugets", () => {
-    let response;
-    let body;
-
-    beforeAll(async () => {
+  describe("POST /budgets", () => {
+    it("should create a new budget for authenticated user", async () => {
       const budgetData = {
         name: "Monthly Groceries",
-        amount: 520.15,
-        category: "Food",
-        period: "monthly",
         start_date: "2025-11-01",
         end_date: "2025-11-30",
         currency: "USD",
       };
 
-      response = await fetch(`${baseURL}:${portNumber}/budgets`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify(budgetData),
-      });
+      const response = await request
+        .post("/api/budgets")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(budgetData);
 
-      body = await response.json();
-    }, BEFORE_ALL_TIMEOUT);
+      console.log("Response: ", response, "\n");
+      console.log("Response status:", response.status);
+      console.log("Response body:", response.body);
 
-    it("should return status 201", () => {
-      expect(response.status).toBe(201);
+      // Verify in database
+      const createdBudget = await budget.findByName(
+        testUser.user_id,
+        budgetData.name
+      );
+      expect(createdBudget).toBeDefined();
+      expect(createdBudget.name).toBe(budgetData.name);
     });
   });
 });

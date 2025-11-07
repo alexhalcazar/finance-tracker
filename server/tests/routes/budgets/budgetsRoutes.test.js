@@ -27,6 +27,12 @@ describe("Budget Routes", () => {
   let testUser;
   let authToken;
   let request = null;
+  const budgetData = {
+    name: "Monthly Groceries",
+    start_date: "2025-11-01",
+    end_date: "2025-11-30",
+    currency: "USD",
+  };
 
   beforeAll(async () => {
     await db.seed.run();
@@ -53,21 +59,12 @@ describe("Budget Routes", () => {
 
   describe("POST /budgets", () => {
     it("should create a new budget for authenticated user", async () => {
-      const budgetData = {
-        name: "Monthly Groceries",
-        start_date: "2025-11-01",
-        end_date: "2025-11-30",
-        currency: "USD",
-      };
-
       const response = await request
         .post("/api/budgets")
         .set("Authorization", `Bearer ${authToken}`)
         .send(budgetData);
 
-      console.log("Response: ", response, "\n");
-      console.log("Response status:", response.status);
-      console.log("Response body:", response.body);
+      expect(response.status).toBe(201);
 
       // Verify in database
       const createdBudget = await budget.findByName(
@@ -76,6 +73,22 @@ describe("Budget Routes", () => {
       );
       expect(createdBudget).toBeDefined();
       expect(createdBudget.name).toBe(budgetData.name);
+    });
+
+    it("should reject budget creation with invalid token", async () => {
+      const response = await request
+        .post("/api/budgets")
+        .set("Authorization", "Bearer this_is_not_a_valid_jwt_token")
+        .send(budgetData);
+
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty("message");
+
+      const createdBudget = await budget.findByName(
+        testUser.user_id,
+        budgetData.name
+      );
+      expect(createdBudget).toBeUndefined();
     });
   });
 });

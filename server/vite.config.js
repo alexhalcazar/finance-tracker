@@ -8,6 +8,7 @@ export default defineConfig({
       "#db": resolve("./src/db/db.js"),
       "#models": resolve("./src/models"),
       "#config": resolve("./knexfile.js"),
+      "#tests": resolve("./tests"),
     },
   },
 });

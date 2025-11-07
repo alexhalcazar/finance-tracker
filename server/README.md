@@ -164,6 +164,47 @@ reference: https://www.npmjs.com/package/react-plaid-link/v/2.1.2
 
 To learn more: https://plaid.com/docs/quickstart/
 
+## Testing API Endpoints
+
+### Testing API Endpoints Resources
+
+Here are some pre-requisite examples that will assist in how the api endpoints are being tested within this project directory.
+[A Simple Guide to Setting Up HTTP-Level Tests with Vitest, MongoDB and Supertest](https://medium.com/@burzhuas/a-simple-guide-to-setting-up-http-level-tests-with-vitest-mongodb-and-supertest-1c5c90d22321)
+
+[Repository Example of Vitest and SuperTest Testing API Endpoints](https://github.com/thomaspsik/server-templ-vitest)
+
+### App.js Refactor
+
+```javascript
+if (["development", "production"].includes(process.env.ENVIRONMENT)) {
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+} else {
+  console.log("Server not started (test mode).");
+}
+
+export default app;
+```
+
+The above snippet will only run the actual API if the .env file contains a key to value pair of the environment to either value of development or production something like below.
+
+```env
+ENVIRONMENT="development"
+```
+
+To run succesful tests, essentially testing the API endpoints without starting the actual server, you must leave the ENVIRONMENT value as empty in order to enter test mode. After you have ran your API endpoint tests with vitest and supertest then you can place in the value of either development or production back to the ENVIRONMENT key found in your .env file.
+
+### Running API Endpoint Tests
+
+To run the API endpoint testing navigate to the test file you will like to test then run the exact same way as you have been running vitest tests such as below.
+
+```bash
+npm run tests
+```
+
+or
+
+````bash
+yar tests
 ## Financial Models
 
 ### How to Use Financial Models
@@ -183,7 +224,7 @@ const userBudgets = await budget.findAll(123);
 
 // Get limited results
 const limitedBudgets = await budget.findAll(123, 5);
-```
+````
 
 findByName takes in a user_id and a name then returns one budget associated with it.
 

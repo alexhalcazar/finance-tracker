@@ -8,7 +8,10 @@
       "#plaid": ["./src/config/plaid.js"],
       "#controllers/*": ["./src/controllers/*.js"],
       "#routes/*": ["./src/routes/*.js"],
-      "#services/*": ["./src/services/*.js"]
+      "#services/*": ["./src/services/*.js"],
+      "#tests/*": ["./tests/*.js"],
+      "#middleware/*": ["./src/middleware/*.js"],
+      "#app": ["app.js"]
     }
   }
 }

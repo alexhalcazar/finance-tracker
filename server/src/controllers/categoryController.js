@@ -39,7 +39,7 @@ const getCategory = async (req, res) => {
 const getAllCategories = async (req, res) => {
   try {
     const { user_id } = req.user;
-    const { budget_id } = req.param;
+    const { budget_id } = req.params;
 
     if (!user_id) {
       return res.status(400).json({
@@ -70,6 +70,7 @@ const getAllCategories = async (req, res) => {
 const createNewCategory = async (req, res) => {
   try {
     const { user_id } = req.user;
+    const {};
   } catch (error) {
     return res.status(500).json({
       error: "Error trying to create new category",

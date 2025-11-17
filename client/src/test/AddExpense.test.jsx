@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { expect, test, describe, vi, beforeEach, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";

@@ -7,12 +7,12 @@ const getCategory = async (req, res) => {
 
     if (!user_id) {
       return res.status(400).json({
-        message: "User not authorzied",
+        message: "User not authorized",
       });
     }
 
     if (!category_id) {
-      return res.status(400).json({
+      return res.status(401).json({
         message: "Category ID is required",
       });
     }
@@ -58,7 +58,7 @@ const getAllCategories = async (req, res) => {
     // handle categories that do exist
     const categories = await category.findAll(budget_id);
 
-    if (!categories) {
+    if (!categories || categories.length === 0) {
       return res.status(404).json({
         message: "No categories found for the Budget ID",
       });
@@ -87,7 +87,7 @@ const createNewCategory = async (req, res) => {
     }
 
     if (!budget_id || !name) {
-      return res.status(401).json({
+      return res.status(400).json({
         message: "Budget id and name of category is required",
       });
     }
@@ -162,7 +162,7 @@ const updateCategory = async (req, res) => {
     const updatedCategory = await category.update(category_id, updates);
 
     if (!updatedCategory) {
-      return res.status(401).json({
+      return res.status(400).json({
         message: "Category update failed",
       });
     }

@@ -6,6 +6,7 @@ import authRouter from "./src/routes/auth.js";
 import bankRouter from "#routes/bank";
 import plaidRouter from "#routes/plaid";
 import budgets from "#routes/budgets";
+import categories from "#routes/categories";
 
 const app = express();
 const PORT = 8080;
@@ -24,6 +25,9 @@ app.use("/api/dummy", verifyToken, dummyRouter);
 app.use("/api/bank", verifyToken, bankRouter);
 app.use("/api/plaid", verifyToken, plaidRouter);
 app.use("/api/budgets", verifyToken, budgets);
+
+// categories routes
+app.use("/api/categories", verifyToken, categories);
 
 if (["development", "production"].includes(process.env.ENVIRONMENT)) {
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

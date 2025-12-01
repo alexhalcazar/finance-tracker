@@ -1,4 +1,5 @@
 import { AuthForm } from "@/features/auth/AuthForm";
+import GoogleLoginButton from "@/features/auth/GoogleLoginButton";
 
 import { Link } from "react-router";
 import { Card } from "@/components/ui/Card";
@@ -48,6 +49,18 @@ export function Login() {
             onSubmit={onSubmit}
             isLoading={isLoading}
           />
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">OR</span>
+            </div>
+          </div>
+
+          {/* Google Login Button */}
+          <GoogleLoginButton />
 
           <div className="text-center">
             <p className="text-sm text-muted">

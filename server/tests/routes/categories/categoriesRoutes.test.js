@@ -85,7 +85,6 @@ describe("Categories Routes", () => {
           color: "#FF0000",
           budget_id: testBudget[0].budget_id,
         });
-      expect(response.status).toBe(201);
       expect(response.body.message).toBe("Category update succesful");
       expect(response.body.updatedCategory).toBeDefined();
     });

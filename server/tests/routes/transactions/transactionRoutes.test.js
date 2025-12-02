@@ -82,4 +82,64 @@ describe("Transaction Routes", () => {
       expect(response.body.message).toBe("Transaction created successfully");
     });
   });
+
+  describe("GET /api/transactions/:transaction_id", () => {
+    it("Should get a specific transaction", async () => {
+      const transaction = await db("transactions")
+        .insert({
+          ...transactionData,
+          budget_id: testBudget[0].budget_id,
+          category_id: testCategory[0].category_id,
+        })
+        .returning("*");
+
+      const response = await request
+        .get(`/api/transactions/${transaction[0].transaction_id}`)
+        .set("Authorization", `Bearer ${authToken}`);
+
+      expect(response.body.transactionData).toBeDefined();
+    });
+  });
+
+  describe("DELETE /api/transactions/:transaction_id", () => {
+    it("Should delete a specific transaction", async () => {
+      const transaction = await db("transactions")
+        .insert({
+          ...transactionData,
+          budget_id: testBudget[0].budget_id,
+          category_id: testCategory[0].category_id,
+        })
+        .returning("*");
+
+      const response = await request
+        .delete(`/api/transactions/${transaction[0].transaction_id}`)
+        .set("Authorization", `Bearer ${authToken}`);
+
+      expect(response.body.message).toBe("Deleted transaction successfully");
+    });
+  });
+
+  describe("UPDATE /api/transactions/:transaction_id", () => {
+    it("Should update a specific transaction", async () => {
+      const transaction = await db("transactions")
+        .insert({
+          ...transactionData,
+          budget_id: testBudget[0].budget_id,
+          category_id: testCategory[0].category_id,
+        })
+        .returning("*");
+
+      const response = await request
+        .put(`/api/transactions/${transaction[0].transaction_id}`)
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          ...transactionData,
+          budget_id: testBudget[0].budget_id,
+          category_id: testCategory[0].category_id,
+          amount: 1000,
+        });
+
+      expect(response.body.message).toBe("Updated transaction successfully");
+    });
+  });
 });

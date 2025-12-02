@@ -374,3 +374,75 @@ Deletes a specific transaction by the passed in transaction_id in the URL parame
   }
 }
 ```
+
+## Recurring Transaction Endpoints
+
+### Overview
+
+The recurring transaction endpoints allow users to create and manage recurring transactions that repeat at specified intervals (e.g., monthly rent, weekly subscriptions). All endpoints require authentication via JWT token.
+
+**Base URL:** `/api/recurring-transactions`
+
+**Authentication:** All endpoints require a valid JWT token in the Authorization header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+## Recurring Transaction Endpoints
+
+### Overview
+
+The recurring transaction endpoints allow users to create and manage recurring transactions that repeat at specified intervals (e.g., monthly rent, weekly subscriptions). All endpoints require authentication via JWT token.
+
+**Base URL:** `/api/recurring-transactions`
+
+**Authentication:** All endpoints require a valid JWT token in the Authorization header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+### Endpoints
+
+#### Create Recurring Transaction
+
+**POST** `/api/recurring-transactions`
+
+Creates a new recurring transaction for the authenticated user. Recurring transactions are useful for expenses or income that repeat on a regular schedule.
+
+**Request Body:**
+
+```json
+{
+  "budget_id": 1,
+  "category_id": 2,
+  "amount": 1200.0,
+  "note": "Monthly rent payment",
+  "frequency": "monthly",
+  "start_date": "2025-01-01",
+  "end_date": "2026-01-01"
+}
+```
+
+**Required Fields:**
+
+- `budget_id` (number) - ID of the budget this recurring transaction belongs to
+- `category_id` (number) - ID of the category for this recurring transaction
+- `amount` (number) - Transaction amount
+- `frequency` (string) - How often the transaction repeats (e.g., "daily", "weekly", "monthly", "yearly")
+- `start_date` (string) - Start date of the recurring pattern in YYYY-MM-DD format
+- `end_date` (string) - End date of the recurring pattern in YYYY-MM-DD format
+
+**Optional Fields:**
+
+- `note` (string) - Additional details about the recurring transaction
+
+**Supported Frequency Values:**
+
+- `daily` - Repeats every day
+- `weekly` - Repeats every week
+- `biweekly` - Repeats every two weeks
+- `monthly` - Repeats every month
+- `quarterly` - Repeats every three months
+- `yearly` - Repeats every year

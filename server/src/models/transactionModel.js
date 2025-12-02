@@ -64,7 +64,7 @@ class Transaction {
    */
   async insert(transaction_data) {
     const [transaction] = await db(this.tableName)
-      .insert({ transaction_data })
+      .insert(transaction_data)
       .returning("*");
     return transaction;
   }
@@ -83,7 +83,7 @@ class Transaction {
   async update(transaction_id, transaction_updates) {
     const [updated_transaction] = await db(this.tableName)
       .where({ transaction_id })
-      .update({ transaction_updates })
+      .update(transaction_updates)
       .returning("*");
 
     return updated_transaction;

@@ -264,3 +264,113 @@ delete will delete the object with the passed in primary id of that model.
 ```javascript
 const deletedBudget = await budget.delete(123);
 ```
+
+## Transaction Endpoint
+
+### How to Use Transaction Endpoints
+
+The transaction endpoints are used to create, read, update, and delete transactions. They are used to manage the transactions of a user.
+
+#### Create Transaction
+
+**POST** `/api/transactions`
+To create a transaction, you need to send a POST request to the `/api/transactions` endpoint with the following body:
+
+**Request Body:**
+
+```json
+// transaction data sent in request body
+{
+  "budget_id": 1,
+  "category_id": 2,
+  "amount": 100.5,
+  "note": "Grocery shopping",
+  "transaction_date": "2025-12-02"
+}
+```
+
+**Required Fields:**
+
+- `budget_id` (number) - ID of the budget this transaction belongs to
+- `category_id` (number) - ID of the category for this transaction
+- `amount` (number) - Transaction amount
+- `transaction_date` (string) - Date of transaction in YYYY-MM-DD format
+  **Optional Fields:**
+- `note` (string) - Additional details about the transaction
+
+#### Get Transaction By ID
+
+**GET** `/api/transactions/:transaction_id`
+
+To get a transaction, you need to send a GET request to the `/api/transactions/:budget_id` endpoint where it will get all
+
+**URL Parameters:**
+
+- `transaction_id` (required) - The ID of the transaction to retrieve
+  **Success Response:**
+
+```json
+{
+  "message": "Transaction retrieved successfully",
+  "transactionData": {
+    "transaction_id": 123,
+    "budget_id": 1,
+    "category_id": 2,
+    "amount": "100.50",
+    "note": "Grocery shopping",
+    "transaction_date": "2025-12-02",
+    "created_at": "2025-12-02T10:30:00.000Z",
+    "updated_at": "2025-12-02T10:30:00.000Z"
+  }
+}
+```
+
+#### Update Transaction
+
+**PUT** `/api/transactions/:transaction_id`
+
+Updates to an existing transaction.
+
+**URL Parameters:**
+
+- `transaction_id` (required) - The ID of the transaction to update
+
+**Request Body:**
+
+```json
+{
+  "budget_id": 1,
+  "category_id": 3,
+  "amount": 150.75,
+  "note": "Updated grocery shopping",
+  "transaction_date": "2025-12-03"
+}
+```
+
+**Note:** All fields are optiona, only include fields you want to update.
+
+#### Delete Transaction
+
+**DELETE** `/api/transactions/:transaction_id`
+
+Deletes a specific transaction by the passed in transaction_id in the URL parameters.
+
+**URL Parameters:**
+
+- `transaction_id` (required) - The ID of the transaction to delete
+
+**Success Response (200):**
+
+```json
+{
+  "message": "Deleted transaction successfully",
+  "deletedTransaction": {
+    "transaction_id": 123,
+    "budget_id": 1,
+    "category_id": 2,
+    "amount": "100.50",
+    "note": "Grocery shopping",
+    "transaction_date": "2025-12-02"
+  }
+}
+```

@@ -91,4 +91,37 @@ describe("Budget Routes", () => {
       expect(createdBudget).toBeUndefined();
     });
   });
+
+  describe("GET /budgets", () => {
+    it("should retrieve all budgets for authenticated user", async () => {
+      await budget.insert({
+        ...budgetData,
+        user_id: testUser.user_id,
+      });
+
+      const response = await request
+        .get("/api/budgets")
+        .set("Authorization", `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty("budgets");
+      expect(response.body.budgets.length).toBeGreaterThan(0);
+    });
+  });
+  describe("GET /budgets/:budget_id", () => {
+    it("should retrieve a specific budget for authenticated user", async () => {
+      const createdBudget = await budget.insert({
+        ...budgetData,
+        user_id: testUser.user_id,
+      });
+
+      const response = await request
+        .get(`/api/budgets/${createdBudget.budget_id}`)
+        .set("Authorization", `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty("budget");
+      expect(response.body.budget.budget_id).toBe(createdBudget.budget_id);
+    });
+  });
 });

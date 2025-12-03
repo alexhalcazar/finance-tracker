@@ -446,3 +446,40 @@ Creates a new recurring transaction for the authenticated user. Recurring transa
 - `monthly` - Repeats every month
 - `quarterly` - Repeats every three months
 - `yearly` - Repeats every year
+
+#### Update Recurring Transaction
+
+**PUT** `/api/recurring-transactions/{recurring_id}`
+
+Updates an existing recurring transaction.
+
+**Request Body:**
+
+```json
+{
+  "budget_id": 1,
+  "category_id": 2,
+  "amount": 1250.0,
+  "note": "Updated note",
+  "frequency": "monthly",
+  "start_date": "2025-01-01",
+  "end_date": "2026-01-01"
+}
+```
+
+**Required Fields in Body Request:**
+
+- `budget_id` (number) - ID of the budget this recurring transaction belongs to
+- `category_id` (number) - ID of the category for this recurring transaction
+- `amount` (number) - Transaction amount
+- `frequency` (string) - How often the transaction repeats
+- `start_date` (string) - Start date of the recurring pattern in YYYY-MM-DD format
+- `end_date` (string) - End date of the recurring pattern in YYYY-MM-DD format
+
+**Optional Fields in Body Request:**
+
+- `note` (string) - Additional details about the recurring transaction
+
+**Required Parameters**
+
+- `recurring_id` (number) - ID of the recurring transaction to update

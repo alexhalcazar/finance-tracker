@@ -9,23 +9,13 @@ class RecurringTransaction {
   }
   /**
    * findAll finds all transactions based on flexible filter criteria
-   * @param {Object} filters - An object containing any combination of filter criteria
-   *   e.g., { budget_id: 123, category_id: 456, start_date: '2024-01-01' }
-   * @param {Number} limitCount - limit option to query based on a count
+   * @param {int} user_id - Passed in user_id
    */
-  async findAll(filters, limitCount) {
-    if (filters && limitCount) {
-      return await db(this.tableName)
-        .where(filters)
-        .limit(limitCount)
-        .select("*");
-    }
-
-    if (!filters) {
-      throw new Error("findAll must contain at least a 'filters' argument");
-    }
-
-    return await db(this.tableName).where(filters).select("*");
+  async findAll(user_id) {
+    return await db("recurring_transactions")
+      .join("budgets", "recurring_transactions.budget_id", "budgets.budget_id")
+      .where("budgets.user_id", user_id)
+      .select("recurring_transactions.*");
   }
 
   // findById will try to find the transaction by the recurring_id

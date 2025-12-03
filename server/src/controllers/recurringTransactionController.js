@@ -152,9 +152,56 @@ const deleteRecurringTransaction = async (req, res) => {
     res.status(500).json({ error: "Failed to delete recurring transaction" });
   }
 };
+const getRecurringTransaction = async (req, res) => {
+  try {
+    const { recurring_id } = req.params;
+    const { user_id } = req.user;
 
+    if (!user_id) {
+      return res.status(400).json({
+        error: "User not authorized",
+      });
+    }
+
+    let recurringTransactionData;
+
+    if (recurring_id) {
+      recurringTransactionData =
+        await recurringTransaction.findById(recurring_id);
+    } else {
+      recurringTransactionData = await recurringTransaction.findAll(user_id);
+    }
+
+    if (
+      !recurringTransactionData ||
+      (Array.isArray(recurringTransactionData) &&
+        recurringTransactionData.length === 0)
+    ) {
+      return res.status(404).json({
+        error: "Recurring transaction(s) not found",
+      });
+    }
+
+    if (Array.isArray(recurringTransactionData)) {
+      return res.status(200).json({
+        message: "Recurring transactions retrieved successfully",
+        recurringTransactions: recurringTransactionData,
+      });
+    }
+
+    return res.status(200).json({
+      message: "Recurring transaction retrieved successfully",
+      recurringTransaction: recurringTransactionData,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Failed to retrieve recurring transaction(s)",
+    });
+  }
+};
 export {
   createNewRecurringTransaction,
   updateRecurringTransaction,
   deleteRecurringTransaction,
+  getRecurringTransaction,
 };

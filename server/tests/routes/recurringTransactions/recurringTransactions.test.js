@@ -114,4 +114,26 @@ describe("Transaction Routes", () => {
       expect(response.body.recurringTransaction.note).toBe("Updated note");
     });
   });
+  describe("DELETE /api/recurring-transactions/:recurring_id", () => {
+    it("should delete a recurring transaction", async () => {
+      const recurringTransaction = await db("recurring_transactions")
+        .insert({
+          ...recurringTransactionData,
+          category_id: testCategory[0].category_id,
+          budget_id: testBudget[0].budget_id,
+        })
+        .returning("*");
+
+      const response = await request
+        .delete(
+          `/api/recurring-transactions/${recurringTransaction[0].recurring_id}`
+        )
+        .set("Authorization", `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe(
+        "Recurring transaction deleted successfully"
+      );
+    });
+  });
 });

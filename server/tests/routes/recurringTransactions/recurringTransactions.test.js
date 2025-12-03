@@ -87,4 +87,31 @@ describe("Transaction Routes", () => {
       );
     });
   });
+  describe("PUT /api/recurring-transactions/:recurring_id", () => {
+    it("should update a recurring transaction", async () => {
+      const recurringTransaction = await db("recurring_transactions")
+        .insert({
+          ...recurringTransactionData,
+          category_id: testCategory[0].category_id,
+          budget_id: testBudget[0].budget_id,
+        })
+        .returning("*");
+
+      const response = await request
+        .put(
+          `/api/recurring-transactions/${recurringTransaction[0].recurring_id}`
+        )
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({
+          amount: 200.0,
+          note: "Updated note",
+          start_date: "2025-02-01",
+          end_date: "2026-02-01",
+          frequency: "weekly",
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.recurringTransaction.note).toBe("Updated note");
+    });
+  });
 });

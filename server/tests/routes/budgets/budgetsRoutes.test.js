@@ -124,4 +124,42 @@ describe("Budget Routes", () => {
       expect(response.body.budget.budget_id).toBe(createdBudget.budget_id);
     });
   });
+  describe("PUT /budgets/:budget_id", () => {
+    it("should update a specific budget for authenticated user", async () => {
+      const createdBudget = await budget.insert({
+        ...budgetData,
+        user_id: testUser.user_id,
+      });
+
+      const updatedData = {
+        name: "Updated Budget Name",
+        start_date: "2023-01-01",
+        end_date: "2023-12-31",
+      };
+
+      const response = await request
+        .put(`/api/budgets/${createdBudget.budget_id}`)
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(updatedData);
+
+      console.log("response", response.body);
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty("budget");
+      expect(response.body.budget.name).toBe(updatedData.name);
+    });
+  });
+  describe("DELETE /budgets/:budget_id", () => {
+    it("should delete a specific budget for authenticated user", async () => {
+      const createdBudget = await budget.insert({
+        ...budgetData,
+        user_id: testUser.user_id,
+      });
+
+      const response = await request
+        .delete(`/api/budgets/${createdBudget.budget_id}`)
+        .set("Authorization", `Bearer ${authToken}`);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("Budget deleted successfully");
+    });
+  });
 });

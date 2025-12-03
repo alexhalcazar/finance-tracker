@@ -483,3 +483,30 @@ Updates an existing recurring transaction.
 **Required Parameters**
 
 - `recurring_id` (number) - ID of the recurring transaction to update
+
+### Get Recurring Transactions
+
+**GET** `/api/recurring-transactions`
+
+#### Get All Recurring Transactions for User
+
+**GET** `/api/recurring-transactions`
+
+Retrieves all recurring transactions associated with the authenticated user's budgets as an array of recurring transactions.
+
+#### Get Specific Recurring Transaction by ID
+
+**GET** `/api/recurring-transactions/:recurring_id`
+
+Retrieves a specific recurring transaction by its ID.
+
+**URL Parameters:**
+
+- `recurring_id` (required) - The ID of the recurring transaction to retrieve
+
+#### GET Rcurring Trasnaction Notes
+
+- Both endpoints require authentication via JWT token
+- The "get all" endpoint automatically filters recurring transactions by the authenticated user's budgets
+- The response includes all recurring transaction details including frequency, date ranges, and associated budget/category IDs
+- Empty results return a 404 status code with an appropriate error message

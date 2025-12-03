@@ -58,8 +58,63 @@ const createNewRecurringTransaction = async (req, res) => {
       recurringTransaction: newRecurringTransaction,
     });
   } catch (error) {
-    res.status(500).json({ error: "error.message " });
+    res.status(500).json({ error: "Failed to create recurring transaction" });
   }
 };
 
-export { createNewRecurringTransaction };
+const updateRecurringTransaction = async (req, res) => {
+  try {
+    const { recurring_id } = req.params;
+    const { user_id } = req.user;
+    const {
+      budget_id,
+      category_id,
+      amount,
+      note,
+      frequency,
+      start_date,
+      end_date,
+    } = req.body;
+
+    if (!user_id) {
+      return res.status(400).json({
+        error: "User not authorized",
+      });
+    }
+
+    if (!recurring_id) {
+      return res.status(400).json({
+        error: "Recurring transaction ID is required",
+      });
+    }
+
+    const recurringTransactionData = {
+      budget_id,
+      category_id,
+      amount,
+      note,
+      start_date,
+      end_date,
+      frequency,
+    };
+
+    const updatedRecurringTransaction = await recurringTransaction.update(
+      recurring_id,
+      recurringTransactionData
+    );
+
+    if (!updatedRecurringTransaction) {
+      return res.status(400).json({
+        error: "Failed to update recurring transaction",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Recurring transaction updated successfully",
+      recurringTransaction: updatedRecurringTransaction,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update recurring transaction" });
+  }
+};
+export { createNewRecurringTransaction, updateRecurringTransaction };

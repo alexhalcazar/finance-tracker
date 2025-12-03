@@ -264,3 +264,50 @@ delete will delete the object with the passed in primary id of that model.
 ```javascript
 const deletedBudget = await budget.delete(123);
 ```
+
+## Budget API Endpoints
+
+### GET /api/budgets
+
+Retrieves all budgets for authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**Query Parameters** (optional):
+
+- `limit` (number) - Limits the number of budgets returned
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Examples**:
+
+```bash
+# Get all budgets
+curl -i http://localhost:8080/api/budgets \
+  -H "Authorization: Bearer <your_access_token>"
+
+# Get budgets with limit
+curl -i http://localhost:8080/api/budgets?limit=5 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### GET /api/budgets/:budget_id
+
+Retrieves a specific budget by budget ID for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to retrieve
+
+**Example**:
+
+```bash
+curl -i http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>"
+```

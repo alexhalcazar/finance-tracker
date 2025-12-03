@@ -117,4 +117,44 @@ const updateRecurringTransaction = async (req, res) => {
     res.status(500).json({ error: "Failed to update recurring transaction" });
   }
 };
-export { createNewRecurringTransaction, updateRecurringTransaction };
+
+const deleteRecurringTransaction = async (req, res) => {
+  try {
+    const { recurring_id } = req.params;
+    const { user_id } = req.user;
+
+    if (!user_id) {
+      return res.status(400).json({
+        error: "User not authorized",
+      });
+    }
+
+    if (!recurring_id) {
+      return res.status(400).json({
+        error: "Recurring transaction ID is required",
+      });
+    }
+
+    const deletedRecurringTransaction =
+      await recurringTransaction.delete(recurring_id);
+
+    if (!deletedRecurringTransaction) {
+      return res.status(400).json({
+        error: "Failed to delete recurring transaction",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Recurring transaction deleted successfully",
+      recurringTransaction: deletedRecurringTransaction,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete recurring transaction" });
+  }
+};
+
+export {
+  createNewRecurringTransaction,
+  updateRecurringTransaction,
+  deleteRecurringTransaction,
+};

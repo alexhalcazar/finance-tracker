@@ -136,4 +136,43 @@ describe("Transaction Routes", () => {
       );
     });
   });
+  describe("GET /api/recurring-transactions/:recurring_id", () => {
+    it("should get a recurring transaction by ID", async () => {
+      const recurringTransaction = await db("recurring_transactions")
+        .insert({
+          ...recurringTransactionData,
+          category_id: testCategory[0].category_id,
+          budget_id: testBudget[0].budget_id,
+        })
+        .returning("*");
+
+      const response = await request
+        .get(
+          `/api/recurring-transactions/${recurringTransaction[0].recurring_id}`
+        )
+        .set("Authorization", `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.recurringTransaction).toHaveProperty(
+        "recurring_id",
+        recurringTransaction[0].recurring_id
+      );
+    });
+  });
+  describe("GET /api/recurring-transactions", () => {
+    it("should get all recurring transactions for the user", async () => {
+      await db("recurring_transactions").insert({
+        ...recurringTransactionData,
+        category_id: testCategory[0].category_id,
+        budget_id: testBudget[0].budget_id,
+      });
+
+      const response = await request
+        .get("/api/recurring-transactions")
+        .set("Authorization", `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.recurringTransactions.length).toBeGreaterThan(0);
+    });
+  });
 });

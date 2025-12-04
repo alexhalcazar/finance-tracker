@@ -17,10 +17,8 @@ export const Transactions = ({ className }) => {
 
   const handleClick = async () => {
     try {
-      // TODO: grab JWT from storage
-
-      // TODO: pass token into fetchLatestTransactions
-      const data = await fetchLatestTransactions();
+      const jwt = sessionStorage.getItem("token");
+      const data = await fetchLatestTransactions(jwt);
       setTransactions(data);
     } catch (err) {
       console.error("Could not retrieve transactions:", err);

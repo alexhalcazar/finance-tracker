@@ -3,6 +3,6 @@ import { getTransactions } from "#controllers/bankController";
 
 const router = express.Router();
 
-router.get("/transactions", getTransactions);
+router.post("/transactions", getTransactions);
 
 export default router;

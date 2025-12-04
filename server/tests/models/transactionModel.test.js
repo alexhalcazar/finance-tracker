@@ -72,7 +72,9 @@ vi.mock("#db", () => ({
     })),
     join: vi.fn(() => ({
       where: vi.fn(() => ({
-        select: vi.fn().mockResolvedValue(userTransactionsData),
+        limit: vi.fn(() => ({
+          select: vi.fn().mockResolvedValue(userTransactionsData),
+        })),
       })),
     })),
     select: vi.fn().mockResolvedValue(allTransactionsData),
@@ -89,10 +91,10 @@ describe("Transaction Model Unit Tests", () => {
     expect(result).toEqual(returnedData);
   });
 
-  test("find all transactions without filters", async () => {
-    const result = await transaction.findAll();
-    expect(result).toEqual(allTransactionsData);
-    expect(result).toHaveLength(2);
+  test("'findAll' transactions without filters should throw an error", async () => {
+    await expect(transaction.findAll()).rejects.toThrow(
+      "findAll for transactions must contain at least a 'filters' argument."
+    );
   });
 
   test("find all transactions with filters", async () => {

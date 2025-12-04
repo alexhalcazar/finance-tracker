@@ -163,3 +163,252 @@ reference: https://www.npmjs.com/package/react-plaid-link/v/2.1.2
 5. Access token is used for further API calls like fetching transactions.
 
 To learn more: https://plaid.com/docs/quickstart/
+
+## Testing API Endpoints
+
+### Testing API Endpoints Resources
+
+Here are some pre-requisite examples that will assist in how the api endpoints are being tested within this project directory.
+[A Simple Guide to Setting Up HTTP-Level Tests with Vitest, MongoDB and Supertest](https://medium.com/@burzhuas/a-simple-guide-to-setting-up-http-level-tests-with-vitest-mongodb-and-supertest-1c5c90d22321)
+
+[Repository Example of Vitest and SuperTest Testing API Endpoints](https://github.com/thomaspsik/server-templ-vitest)
+
+### App.js Refactor
+
+```javascript
+if (["development", "production"].includes(process.env.ENVIRONMENT)) {
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+} else {
+  console.log("Server not started (test mode).");
+}
+
+export default app;
+```
+
+The above snippet will only run the actual API if the .env file contains a key to value pair of the environment to either value of development or production something like below.
+
+```env
+ENVIRONMENT="development"
+```
+
+To run succesful tests, essentially testing the API endpoints without starting the actual server, you must leave the ENVIRONMENT value as empty in order to enter test mode. After you have ran your API endpoint tests with vitest and supertest then you can place in the value of either development or production back to the ENVIRONMENT key found in your .env file.
+
+### Running API Endpoint Tests
+
+To run the API endpoint testing navigate to the test file you will like to test then run the exact same way as you have been running vitest tests such as below.
+
+```bash
+npm run tests
+```
+
+or
+
+````bash
+yar tests
+## Financial Models
+
+### How to Use Financial Models
+
+All the financial models follow a similar pattern which details a similar pattern here:
+https://itnext.io/crafting-database-models-with-knex-js-and-postgresql-b3a74e789794
+
+All the models have their properties and types listed inside each model of what each parameter represents as well as what each returns. You may use these models when fleshing out API endpoints and or any other additional backend logic you need.
+
+#### Budget Model Examples
+
+findAll looks like this for the budget model and similar other models.
+
+```javascript
+// Get all budgets for user
+const userBudgets = await budget.findAll(123);
+
+// Get limited results
+const limitedBudgets = await budget.findAll(123, 5);
+````
+
+findByName takes in a user_id and a name then returns one budget associated with it.
+
+```javascript
+const personalBudget = await budget.findByName(123, "Personal Budget");
+```
+
+findById takes in the budget id (for each model it will be the main primary key) and returns one budget record.
+
+```javascript
+const budgetDetails = await budget.findById(123);
+```
+
+insert will take in the object that the model expects and inserts a new record into the database, for example below is the a new budget being inserted.
+
+```javascript
+const newBudget = await budget.insert({
+  user_id: 245,
+  name: "Vacation Fund",
+  start_date: new Date("2025-01-01"),
+  end_date: new Date("2025-12-31"),
+  currency: "USD",
+});
+```
+
+update will update the object with whichever properties and values you pass in as an object, alongside the main primary id you want to update for.
+
+```javascript
+const updatedBudget = await budget.update(123, {
+  name: "Updated Vacation Fund",
+  end_date: new Date("2026-12-31"),
+});
+```
+
+delete will delete the object with the passed in primary id of that model.
+
+```javascript
+const deletedBudget = await budget.delete(123);
+```
+
+## Budget API Endpoints
+
+### GET /api/budgets
+
+Retrieves all budgets for authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**Query Parameters** (optional):
+
+- `limit` (number) - Limits the number of budgets returned
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Examples**:
+
+```bash
+# Get all budgets
+curl -i http://localhost:8080/api/budgets \
+  -H "Authorization: Bearer <your_access_token>"
+
+# Get budgets with limit
+curl -i http://localhost:8080/api/budgets?limit=5 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### GET /api/budgets/:budget_id
+
+Retrieves a specific budget by budget ID for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to retrieve
+
+**Example**:
+
+```bash
+curl -i http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### PUT /api/budgets/:budget_id
+
+Updates an existing budget for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to update
+
+**Request Body** (all optional):
+
+```json
+{
+  "name": "Updated Budget Name",
+  "start_date": "2025-01-01",
+  "end_date": "2025-12-31",
+  "currency": "USD"
+}
+```
+
+**Example**:
+
+```bash
+curl -i -X PUT http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Vacation Fund",
+    "start_date": "2025-01-01",
+    "end_date": "2025-12-31",
+    "currency": "EUR"
+  }'
+```
+
+### DELETE /api/budgets/:budget_id
+
+Deletes a specific budget for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to delete
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Example**:
+
+```bash
+curl -i -X DELETE http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### POST /api/budgets
+
+Creates a new budget for the user.
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+Content-Type: application/json
+```
+
+**Request Body** (required):
+
+```json
+{
+  "name": "Monthly Groceries",
+  "start_date": "2025-11-01",
+  "end_date": "2025-11-30",
+  "currency": "USD"
+}
+```
+
+**Field Requirement in Request Body**:
+
+- `name` (string, required) - Name of the budget
+- `start_date` (string, required) - Start date in YYYY-MM-DD format
+- `end_date` (string, required) - End date in YYYY-MM-DD format
+- `currency` (string, optional) - Currency code (e.g., USD, EUR)
+
+**Example**:
+
+```bash
+curl -i -X POST http://localhost:8080/api/budgets \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Monthly Groceries",
+    "start_date": "2025-11-01",
+    "end_date": "2025-11-30",
+    "currency": "USD"
+  }'
+```

@@ -22,13 +22,6 @@ class Transaction {
         .select("*");
     }
 
-    if (filters && limitCount) {
-      return await db(this.tableName)
-        .where(filters)
-        .limit(limitCount)
-        .select("*");
-    }
-
     if (!filters) {
       throw new Error(
         "findAll for transactions must contain at least a 'filters' argument."

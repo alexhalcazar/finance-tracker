@@ -1,4 +1,3 @@
-import transaction from "#models/transactionModel.js";
 import { faker } from "@faker-js/faker";
 
 export async function seed(knex) {

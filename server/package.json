@@ -10,13 +10,16 @@
   },
   "imports": {
     "#db": "./src/db/db.js",
+    "#app": "app.js",
     "#models/*": "./src/models/*.js",
     "#config": "./knexfile.js",
     "#plaid": "./src/config/plaid.js",
     "#controllers/*": "./src/controllers/*.js",
     "#routes/*": "./src/routes/*.js",
     "#services/*": "./src/services/*.js",
-    "#middleware/*": "./src/middleware/*.js"
+    "#tests/*": "./tests/*.js",
+    "#middleware/*": "./src/middleware/*.js",
+    "#utils/*": "./src/utils/*.js"
   },
   "author": "jesus-perez",
   "license": "ISC",
@@ -38,6 +41,7 @@
     "eslint-config-prettier": "^10.1.8",
     "nodemon": "^3.1.7",
     "prettier": "^3.6.2",
+    "supertest": "^7.1.4",
     "vitest": "^3.2.4"
   }
 }

@@ -28,20 +28,20 @@ class Budget {
 
   // findByName finds the budget in the database by passed user id and the category name
   async findByName(user_id, name) {
-    const [budget] = await db(this.tableName).where({ user_id, name }).first();
+    const budget = await db(this.tableName).where({ user_id, name }).first();
     return budget;
   }
 
   // findById finds budget by passed in budget id
   async findById(budget_id) {
-    const [budget] = await db(this.tableName).where({ budget_id }).first();
+    const budget = await db(this.tableName).where({ budget_id }).first();
     return budget;
   }
 
   // insert new budget to the database
   async insert(budgetData) {
     const [newBudget] = await db(this.tableName)
-      .insert({ budgetData })
+      .insert(budgetData)
       .returning("*");
     return newBudget;
   }
@@ -50,7 +50,7 @@ class Budget {
   async update(budget_id, updates) {
     const [updatedBudget] = await db(this.tableName)
       .where({ budget_id })
-      .update({ updates })
+      .update(updates)
       .returning("*");
     return updatedBudget;
   }

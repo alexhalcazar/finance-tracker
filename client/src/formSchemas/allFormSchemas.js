@@ -29,13 +29,47 @@ const addExpenseSchema = z.object({
   amount: z.coerce
     .number({ invalid_type_error: "Amount must be a number" })
     .positive("Amount must be greater than zero"),
-  category: z.enum(["Rent", "Food", "Savings", "Gas", "Tuition"], {
-    errorMap: () => ({ message: "Please select a valid category" }),
-  }),
+  category: z.enum(
+    [
+      "Rent",
+      "Bills",
+      "Food",
+      "Transportation",
+      "Tuition",
+      "Spending",
+      "Savings",
+    ],
+    {
+      errorMap: () => ({ message: "Please select a valid category" }),
+    }
+  ),
   description: z.string().min(1, { message: "Description is required" }),
   transactionDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Please enter a valid date",
   }),
 });
 
-export { loginSchema, registerSchema, addExpenseSchema };
+const addCategorySchema = z.object({
+  type: z.enum(["Income", "Expense"], {
+    errorMap: () => ({ message: "Please select a valid type" }),
+  }),
+  name: z.enum(
+    [
+      "Rent",
+      "Bills",
+      "Food",
+      "Transportation",
+      "Tuition",
+      "Spending",
+      "Savings",
+    ],
+    {
+      errorMap: () => ({ message: "Please select a valid name" }),
+    }
+  ),
+  limit: z.coerce
+    .number({ invalid_type_error: "Amount must be a number" })
+    .positive("Amount must be greater than zero"),
+});
+
+export { loginSchema, registerSchema, addExpenseSchema, addCategorySchema };

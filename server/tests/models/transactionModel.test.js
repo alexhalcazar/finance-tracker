@@ -72,7 +72,9 @@ vi.mock("#db", () => ({
     })),
     join: vi.fn(() => ({
       where: vi.fn(() => ({
-        select: vi.fn().mockResolvedValue(userTransactionsData),
+        limit: vi.fn(() => ({
+          select: vi.fn().mockResolvedValue(userTransactionsData),
+        })),
       })),
     })),
     select: vi.fn().mockResolvedValue(allTransactionsData),

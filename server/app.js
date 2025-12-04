@@ -6,6 +6,8 @@ import authRouter from "#routes/auth";
 import bankRouter from "#routes/bank";
 import plaidRouter from "#routes/plaid";
 import budgets from "#routes/budgets";
+import transactions from "#routes/transactions";
+import recurringTransactions from "#routes/recurringTransactions";
 
 const app = express();
 const PORT = 8080;
@@ -24,6 +26,12 @@ app.use("/api/dummy", verifyToken, dummyRouter);
 app.use("/api/bank", verifyToken, bankRouter);
 app.use("/api/plaid", verifyToken, plaidRouter);
 app.use("/api/budgets", verifyToken, budgets);
+
+// transaction routes
+app.use("/api/transactions", verifyToken, transactions);
+
+// recurring transaction routes
+app.use("/api/recurring-transactions", verifyToken, recurringTransactions);
 
 if (["development", "production"].includes(process.env.ENVIRONMENT)) {
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

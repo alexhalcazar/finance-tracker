@@ -510,3 +510,151 @@ Retrieves a specific recurring transaction by its ID.
 - The "get all" endpoint automatically filters recurring transactions by the authenticated user's budgets
 - The response includes all recurring transaction details including frequency, date ranges, and associated budget/category IDs
 - Empty results return a 404 status code with an appropriate error message
+
+## Budget API Endpoints
+
+### GET /api/budgets
+
+Retrieves all budgets for authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**Query Parameters** (optional):
+
+- `limit` (number) - Limits the number of budgets returned
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Examples**:
+
+```bash
+# Get all budgets
+curl -i http://localhost:8080/api/budgets \
+  -H "Authorization: Bearer <your_access_token>"
+
+# Get budgets with limit
+curl -i http://localhost:8080/api/budgets?limit=5 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### GET /api/budgets/:budget_id
+
+Retrieves a specific budget by budget ID for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to retrieve
+
+**Example**:
+
+```bash
+curl -i http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### PUT /api/budgets/:budget_id
+
+Updates an existing budget for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to update
+
+**Request Body** (all optional):
+
+```json
+{
+  "name": "Updated Budget Name",
+  "start_date": "2025-01-01",
+  "end_date": "2025-12-31",
+  "currency": "USD"
+}
+```
+
+**Example**:
+
+```bash
+curl -i -X PUT http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Vacation Fund",
+    "start_date": "2025-01-01",
+    "end_date": "2025-12-31",
+    "currency": "EUR"
+  }'
+```
+
+### DELETE /api/budgets/:budget_id
+
+Deletes a specific budget for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to delete
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Example**:
+
+```bash
+curl -i -X DELETE http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### POST /api/budgets
+
+Creates a new budget for the user.
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+Content-Type: application/json
+```
+
+**Request Body** (required):
+
+```json
+{
+  "name": "Monthly Groceries",
+  "start_date": "2025-11-01",
+  "end_date": "2025-11-30",
+  "currency": "USD"
+}
+```
+
+**Field Requirement in Request Body**:
+
+- `name` (string, required) - Name of the budget
+- `start_date` (string, required) - Start date in YYYY-MM-DD format
+- `end_date` (string, required) - End date in YYYY-MM-DD format
+- `currency` (string, optional) - Currency code (e.g., USD, EUR)
+
+**Example**:
+
+```bash
+curl -i -X POST http://localhost:8080/api/budgets \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Monthly Groceries",
+    "start_date": "2025-11-01",
+    "end_date": "2025-11-30",
+    "currency": "USD"
+  }'
+```

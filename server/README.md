@@ -470,10 +470,6 @@ Updates an existing recurring transaction.
 
 - `recurring_id` (number) - ID of the recurring transaction to update
 
-### Get Recurring Transactions
-
-**GET** `/api/recurring-transactions`
-
 #### Get All Recurring Transactions for User
 
 **GET** `/api/recurring-transactions`

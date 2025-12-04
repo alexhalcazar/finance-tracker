@@ -13,6 +13,7 @@ export function Register() {
   const registerForm = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -21,11 +22,26 @@ export function Register() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-
     try {
-      console.log("Login Data\n", data);
-    } catch (error) {
-      console.error("Login page error: ", error);
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        errorData = await response.json();
+        console.error("Error:", errorData.error);
+        return;
+      }
+
+      const result = await response.json();
+      const token = result.token;
+      sessionStorage.setItem("token", token);
+      window.location.replace("http://localhost:5173/dashboard");
+    } catch (err) {
+      console.error("Login page error: ", err);
     } finally {
       setIsLoading(false);
     }

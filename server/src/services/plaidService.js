@@ -32,6 +32,9 @@ export const setAccessToken = async (publicToken) => {
 
     const access_token = response.data.access_token;
     // TODO: store accessToken securely in our database
+
+    // placeholder will return access_token for now
+    return access_token;
   } catch (err) {
     console.error(
       "Could not exchange public token for access token:",

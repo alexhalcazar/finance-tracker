@@ -17,10 +17,8 @@ export const Account = () => {
   const handleClick = async () => {
     try {
       setLoading(true);
-      // TODO: grab JWT from storage
-      // TODO: pass JWT to fetchLinkToken
-
-      const token = await fetchLinkToken();
+      const jwt = sessionStorage.getItem("token");
+      const token = await fetchLinkToken(jwt);
       setLinkToken(token);
     } catch (err) {
       console.error(err);
@@ -31,20 +29,22 @@ export const Account = () => {
 
   const onSuccess = useCallback(async (publicToken, metadata) => {
     try {
-      // TODO: grab JWT from storage
-      // TODO: pass JWT token into headers
+      const jwt = sessionStorage.getItem("token");
       const response = await fetch("/api/plaid/exchange_link_token", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
         body: JSON.stringify({ publicToken }),
       });
-      const data = await response.json();
-      // storing data to local storage for demo purposes only
-      if (data) {
-        localStorage.setItem("access_token", data);
+      if (response.ok) {
+        const data = await response.json();
+        // store access_token as a placeholder
+        sessionStorage.setItem("access_token", data);
       }
     } catch (err) {
-      console.error("Error fetching public token");
+      console.error("Error fetching public token", err);
     }
   }, []);
 

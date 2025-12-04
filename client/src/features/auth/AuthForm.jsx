@@ -31,6 +31,19 @@ export function AuthForm({
   return (
     <form className={className} onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2">
+        <Label htmlFor="username">Username</Label>
+        <Input
+          type="text"
+          placeholder="Enter your username"
+          id="username"
+          {...register("username")}
+        />
+        <p className={cn([errors.username?.message && "text-error"])}>
+          {errors.username?.message}
+        </p>
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
           type="email"

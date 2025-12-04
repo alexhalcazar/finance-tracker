@@ -347,7 +347,7 @@ Updates to an existing transaction.
 }
 ```
 
-**Note:** All fields are optiona, only include fields you want to update.
+**Note:** All fields are optional, only include fields you want to update.
 
 #### Delete Transaction
 
@@ -373,20 +373,6 @@ Deletes a specific transaction by the passed in transaction_id in the URL parame
     "transaction_date": "2025-12-02"
   }
 }
-```
-
-## Recurring Transaction Endpoints
-
-### Overview
-
-The recurring transaction endpoints allow users to create and manage recurring transactions that repeat at specified intervals (e.g., monthly rent, weekly subscriptions). All endpoints require authentication via JWT token.
-
-**Base URL:** `/api/recurring-transactions`
-
-**Authentication:** All endpoints require a valid JWT token in the Authorization header:
-
-```
-Authorization: Bearer <your_jwt_token>
 ```
 
 ## Recurring Transaction Endpoints

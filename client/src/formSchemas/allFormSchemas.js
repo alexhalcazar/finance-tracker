@@ -10,6 +10,9 @@ const loginSchema = z.object({
   password: z
     .string()
     .min(6, { error: "Password must be at least 6 characters in length." }),
+  username: z
+    .string()
+    .min(6, { error: "Username must be at least 6 characters in length." }),
 });
 
 /**

@@ -265,6 +265,79 @@ delete will delete the object with the passed in primary id of that model.
 const deletedBudget = await budget.delete(123);
 ```
 
+# API Documentation
+
+Below is the API documentation for all the server endpoints.
+
+# Categories API Documentation
+
+## Base URL
+
+```
+/api/categories
+```
+
+## Authentication
+
+All endpoints require a valid JWT token passed in the Authorization header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+---
+
+## Category Endpoints
+
+### Get Single Category
+
+Retrieves a specific category by its ID.
+
+**Endpoint:** `GET /api/categories/:category_id`
+
+**URL Parameters:**
+
+- Parameter(s): category_id
+- Type: Integer
+- Required: Yes
+- Description: The unique identifier of the category
+
+**Example Request:**
+
+```bash
+# Get all categories for a specific budget
+curl -X GET \
+  'http://localhost:3000/api/categories?category_id=2' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+```
+
+**Headers:**
+
+```http
+Authorization: Bearer <token>
+```
+
+### Get all Categories
+
+Retrieves all categories, optionally filtered by budget_id.
+
+**Endpoint:** `GET /api/categories?budget_id=<budget_id>`
+
+**Headers:**
+
+```http
+Authorization: Bearer <token>
+```
+
+**Example Request:**
+
+```bash
+# Get all categories
+curl -X GET \
+  http://localhost:3000/api/categories \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+```
+
 ## Transaction Endpoint
 
 ### How to Use Transaction Endpoints

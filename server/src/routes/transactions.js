@@ -1,5 +1,4 @@
 import express from "express";
-import { verifyToken } from "#middleware/jwt";
 import {
   createNewTransaction,
   getTransaction,
@@ -9,8 +8,8 @@ import {
 
 const router = express.Router();
 
-router.post("/", verifyToken, createNewTransaction);
-router.get("/:transaction_id?", verifyToken, getTransaction);
-router.put("/:transaction_id", verifyToken, updateTransaction);
-router.delete("/:transaction_id", verifyToken, deleteTransaction);
+router.post("/", createNewTransaction);
+router.get("/:transaction_id?", getTransaction);
+router.put("/:transaction_id", updateTransaction);
+router.delete("/:transaction_id", deleteTransaction);
 export default router;

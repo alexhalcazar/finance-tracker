@@ -56,10 +56,12 @@ export function AddExpenseForm({
         >
           <option value="">Select a category</option>
           <option value="Rent">Rent</option>
+          <option value="Bills">Bills</option>
           <option value="Food">Food</option>
-          <option value="Savings">Savings</option>
-          <option value="Gas">Gas</option>
+          <option value="Transportation">Transportation</option>
           <option value="Tuition">Tuition</option>
+          <option value="Spending">Spending</option>
+          <option value="Savings">Savings</option>
         </select>
         <p className={cn([errors.category?.message && "text-error"])}>
           {errors.category?.message}

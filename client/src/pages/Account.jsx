@@ -38,10 +38,9 @@ export const Account = () => {
         },
         body: JSON.stringify({ publicToken }),
       });
-      if (response.ok) {
-        const data = await response.json();
-        // store access_token as a placeholder
-        sessionStorage.setItem("access_token", data);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error storing exchanging link token", errorData);
       }
     } catch (err) {
       console.error("Error fetching public token", err);

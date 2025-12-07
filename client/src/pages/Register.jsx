@@ -31,7 +31,7 @@ export function Register() {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        errorData = await response.json();
+        const errorData = await response.json();
         console.error("Error:", errorData.error);
         return;
       }

@@ -16,7 +16,7 @@ export function up(knex) {
  */
 export function down(knex) {
   knex.schema.alterTable("users", (table) => {
-    table.dropColumn("bank_access_token");
+    table.dropColumn("encrypted_token");
     table.dropColumn("initialization_vector");
     table.dropColumn("tag");
   });

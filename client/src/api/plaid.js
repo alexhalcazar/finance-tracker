@@ -13,6 +13,13 @@ export const fetchLatestTransactions = async (token, max = 5) => {
       },
       body: JSON.stringify({ access_token: access_token }),
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      const errorMessage = error.message;
+      throw new Error(errorMessage);
+    }
+
     const data = await response.json();
     for (let i = 0; i < Math.min(data.length, max); i++) {
       const thisTransaction = {
@@ -26,6 +33,7 @@ export const fetchLatestTransactions = async (token, max = 5) => {
     return latestTransactions;
   } catch (err) {
     console.error("Could not retrieve transactions:", err);
+    throw err;
   }
 };
 

@@ -27,7 +27,7 @@ export function verifyToken(req, res, next) {
 
   // Extract Token
   const token = authHeader.split(" ")[1];
-  if (!token || token === "undefined") {
+  if (!token || token === "undefined" || token === "null") {
     return res.status(401).json({ message: "Authorization token missing" });
   }
 

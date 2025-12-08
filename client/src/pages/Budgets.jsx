@@ -9,7 +9,7 @@ import {
   sideBarClass,
 } from "@/components/config/sidebarConfig";
 import { Card } from "@/components/ui/Card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Budgets = () => {
   const form = useForm({
@@ -22,14 +22,38 @@ export const Budgets = () => {
     },
   });
 
-  // Local state to store categories (example)
   const [budgets, setBudgets] = useState([]);
 
-  // Handle form submission
+  const token = sessionStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchBudgets = async (token) => {
+      try {
+        const response = await fetch("/api/budgets/?limit=10", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          console.error("Something went wrong");
+        }
+        const data = await response.json();
+        setBudgets(data.budgets);
+      } catch (err) {
+        console.error("Error downloading all budgets from database:", err);
+      }
+    };
+
+    fetchBudgets(token);
+  }, [token]);
+
   const onSubmit = async (budget) => {
     const { name, start_date, end_date, currency } = budget;
     try {
-      const response = await fetch("/api/budgets", {
+      const response = await fetch("/api/budgets?limit=10", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -38,10 +62,9 @@ export const Budgets = () => {
         body: JSON.stringify({ name, start_date, end_date, currency }),
       });
       const data = await response.json();
-
       const budget = data.newBudget;
-      console.log("Our new budget", budget);
-      // setBudgets((prev) => [...prev, data]);
+
+      setBudgets((prev) => [...prev, budget]);
 
       form.reset();
     } catch (err) {
@@ -72,7 +95,9 @@ export const Budgets = () => {
 
           <div className="flex-1 bg-white p-4 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">Existing Budgets</h3>
-            {budgets.length === 0 ? (
+            {!budgets ? (
+              <p>Something went wrong</p>
+            ) : budgets.length === 0 ? (
               <p className="text-gray-500">No budgets yet.</p>
             ) : (
               <ul className="space-y-2">
@@ -82,9 +107,9 @@ export const Budgets = () => {
                     className="border p-2 rounded-md flex justify-between"
                   >
                     <span>
-                      <strong>{budget.type}:</strong> {budget.name}
+                      <strong>{budget.budget_id}:</strong> {budget.name}
                     </span>
-                    <span>${parseFloat(cat.limit).toFixed(2)}</span>
+                    <span>${parseFloat(budget.currency).toFixed(2)}</span>
                   </li>
                 ))}
               </ul>

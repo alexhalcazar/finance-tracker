@@ -37,10 +37,13 @@ export const Budgets = () => {
           },
         });
 
-        if (!response.ok) {
-          console.error("Something went wrong");
-        }
         const data = await response.json();
+
+        if (!response.ok) {
+          console.error("Error:", data);
+          return;
+        }
+
         setBudgets(data.budgets);
       } catch (err) {
         console.error("Error downloading all budgets from database:", err);

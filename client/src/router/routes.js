@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 import App from "@/App";
 import { Login } from "@/pages/Login";
 import { Register } from "@/pages/Register";
+import OAuthCallback from "@/pages/OAuthCallback";
 import { AddExpense } from "@/pages/AddExpense";
 import { Dashboard } from "@/pages/Dashboard";
 import { Transactions } from "@/pages/Transactions";
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
         children: [
           { path: "login", Component: Login },
           { path: "register", Component: Register },
+          { path: "callback", Component: OAuthCallback },
         ],
       },
       {

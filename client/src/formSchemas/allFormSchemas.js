@@ -75,4 +75,25 @@ const addCategorySchema = z.object({
     .positive("Amount must be greater than zero"),
 });
 
-export { loginSchema, registerSchema, addExpenseSchema, addCategorySchema };
+const addBudgetSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  start_date: z
+    .string()
+    .min(1, "Start date is required")
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Invalid start date",
+    }),
+  end_date: z
+    .string()
+    .min(1, "End date is required")
+    .refine((val) => !isNaN(Date.parse(val)), { message: "Invalid end date" }),
+  currency: z.string().min(1, "Currency is required"),
+});
+
+export {
+  loginSchema,
+  registerSchema,
+  addExpenseSchema,
+  addCategorySchema,
+  addBudgetSchema,
+};

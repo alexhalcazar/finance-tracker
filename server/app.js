@@ -1,6 +1,9 @@
 import "dotenv/config";
+console.log("🔍 GOOGLE_CALLBACK_URL:", process.env.GOOGLE_CALLBACK_URL);
+console.log("🔍 GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
 import express from "express";
-import { verifyToken } from "#middleware/jwt";
+import { verifyToken } from "./src/middleware/jwt.js";
+import passport from "./src/config/passport.js";
 import dummyRouter from "#routes/dummy";
 import authRouter from "#routes/auth";
 import bankRouter from "#routes/bank";
@@ -11,9 +14,11 @@ import transactions from "#routes/transactions";
 import recurringTransactions from "#routes/recurringTransactions";
 
 const app = express();
-const PORT = 8080;
+const PORT = 3030;
 
 app.use(express.json());
+// Initialize Passport for OAuth authentication
+//app.use(passport.initialize());
 
 // Public ping (no auth)
 app.get("/api/ping", (_req, res) => res.json({ ok: true }));

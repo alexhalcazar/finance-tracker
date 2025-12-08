@@ -12,7 +12,7 @@ import { useState } from "react";
 
 export const Transactions = ({ className }) => {
   const [transactions, setTransactions] = useState([]);
-
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = async () => {
@@ -20,8 +20,10 @@ export const Transactions = ({ className }) => {
       const jwt = sessionStorage.getItem("token");
       const data = await fetchLatestTransactions(jwt);
       setTransactions(data);
+      setError(false);
     } catch (err) {
       console.error("Could not retrieve transactions:", err);
+      setError(true);
     }
   };
 
@@ -40,7 +42,11 @@ export const Transactions = ({ className }) => {
           <Button onClick={handleClick}>Get transactions</Button>
         </div>
         <div className="flex flex-col items-center w-full">
-          {transactions.length > 0 ? (
+          {error ? (
+            <div className="border p-4 rounded bg-red-100 w-full max-w-md mt-4 text-red-800 text-center">
+              Please connect a bank account via Account
+            </div>
+          ) : Array.isArray(transactions) && transactions.length > 0 ? (
             <ul className="border p-4 rounded bg-gray-100 w-full max-w-md mt-4">
               {transactions.map((item, index) => (
                 <li key={index}>

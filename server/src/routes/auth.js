@@ -13,6 +13,7 @@ import {
   selectUserByUsername,
 } from "../models/userModel.js";
 import { loginLimiter, registerLimiter } from "../middleware/rateLimiter.js";
+import passport from "../config/passport.js";
 
 const router = express.Router();
 
@@ -216,5 +217,42 @@ router.post("/logout", (req, res) => {
     message: "Logout successful. Token removed from client.",
   });
 });
+
+//google API
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    session: false,
+  })
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: `${process.env.CLIENT_URL}/login?error=oauth_failed`,
+  }),
+  (req, res) => {
+    try {
+      const user = req.user;
+      const token = generateAccessToken(user);
+
+      res.redirect(
+        `${process.env.CLIENT_URL}/auth/callback?token=${token}&user=${encodeURIComponent(
+          JSON.stringify({
+            user_id: user.user_id,
+            username: user.username,
+            email: user.email,
+            profile_picture: user.profile_picture,
+          })
+        )}`
+      );
+    } catch (error) {
+      console.error("Error in Google OAuth callback:", error);
+      res.redirect(`${process.env.CLIENT_URL}/login?error=auth_failed`);
+    }
+  }
+);
 
 export default router;

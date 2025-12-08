@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
+    "@react-oauth/google": "^0.12.2",
     "@tailwindcss/vite": "^4.1.13",
     "clsx": "^2.1.1",
     "react": "^19.1.1",

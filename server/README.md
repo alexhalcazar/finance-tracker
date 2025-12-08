@@ -264,3 +264,452 @@ delete will delete the object with the passed in primary id of that model.
 ```javascript
 const deletedBudget = await budget.delete(123);
 ```
+
+# API Documentation
+
+Below is the API documentation for all the server endpoints.
+
+# Categories API Documentation
+
+## Base URL
+
+```
+/api/categories
+```
+
+## Authentication
+
+All endpoints require a valid JWT token passed in the Authorization header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+---
+
+## Category Endpoints
+
+### Get Single Category
+
+Retrieves a specific category by its ID.
+
+**Endpoint:** `GET /api/categories/:category_id`
+
+**URL Parameters:**
+
+- Parameter(s): category_id
+- Type: Integer
+- Required: Yes
+- Description: The unique identifier of the category
+
+**Example Request:**
+
+```bash
+# Get all categories for a specific budget
+curl -X GET \
+  'http://localhost:3000/api/categories?category_id=2' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+```
+
+**Headers:**
+
+```http
+Authorization: Bearer <token>
+```
+
+### Get all Categories
+
+Retrieves all categories, optionally filtered by budget_id.
+
+**Endpoint:** `GET /api/categories?budget_id=<budget_id>`
+
+**Headers:**
+
+```http
+Authorization: Bearer <token>
+```
+
+**Example Request:**
+
+```bash
+# Get all categories
+curl -X GET \
+  http://localhost:3000/api/categories \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+```
+
+## Transaction Endpoint
+
+### How to Use Transaction Endpoints
+
+The transaction endpoints are used to create, read, update, and delete transactions. They are used to manage the transactions of a user.
+
+#### Create Transaction
+
+**POST** `/api/transactions`
+To create a transaction, you need to send a POST request to the `/api/transactions` endpoint with the following body:
+
+**Request Body:**
+
+```json
+// transaction data sent in request body
+{
+  "budget_id": 1,
+  "category_id": 2,
+  "amount": 100.5,
+  "note": "Grocery shopping",
+  "transaction_date": "2025-12-02"
+}
+```
+
+**Required Fields:**
+
+- `budget_id` (number) - ID of the budget this transaction belongs to
+- `category_id` (number) - ID of the category for this transaction
+- `amount` (number) - Transaction amount
+- `transaction_date` (string) - Date of transaction in YYYY-MM-DD format
+  **Optional Fields:**
+- `note` (string) - Additional details about the transaction
+
+#### Get Transaction By ID
+
+**GET** `/api/transactions/:transaction_id`
+
+To get a transaction, you need to send a GET request to the `/api/transactions/:budget_id` endpoint where it will get all
+
+**URL Parameters:**
+
+- `transaction_id` (required) - The ID of the transaction to retrieve
+  **Success Response:**
+
+```json
+{
+  "message": "Transaction retrieved successfully",
+  "transactionData": {
+    "transaction_id": 123,
+    "budget_id": 1,
+    "category_id": 2,
+    "amount": "100.50",
+    "note": "Grocery shopping",
+    "transaction_date": "2025-12-02",
+    "created_at": "2025-12-02T10:30:00.000Z",
+    "updated_at": "2025-12-02T10:30:00.000Z"
+  }
+}
+```
+
+#### Update Transaction
+
+**PUT** `/api/transactions/:transaction_id`
+
+Updates to an existing transaction.
+
+**URL Parameters:**
+
+- `transaction_id` (required) - The ID of the transaction to update
+
+**Request Body:**
+
+```json
+{
+  "budget_id": 1,
+  "category_id": 3,
+  "amount": 150.75,
+  "note": "Updated grocery shopping",
+  "transaction_date": "2025-12-03"
+}
+```
+
+**Note:** All fields are optional, only include fields you want to update.
+
+#### Delete Transaction
+
+**DELETE** `/api/transactions/:transaction_id`
+
+Deletes a specific transaction by the passed in transaction_id in the URL parameters.
+
+**URL Parameters:**
+
+- `transaction_id` (required) - The ID of the transaction to delete
+
+**Success Response (200):**
+
+```json
+{
+  "message": "Deleted transaction successfully",
+  "deletedTransaction": {
+    "transaction_id": 123,
+    "budget_id": 1,
+    "category_id": 2,
+    "amount": "100.50",
+    "note": "Grocery shopping",
+    "transaction_date": "2025-12-02"
+  }
+}
+```
+
+## Recurring Transaction Endpoints
+
+### Overview
+
+The recurring transaction endpoints allow users to create and manage recurring transactions that repeat at specified intervals (e.g., monthly rent, weekly subscriptions). All endpoints require authentication via JWT token.
+
+**Base URL:** `/api/recurring-transactions`
+
+**Authentication:** All endpoints require a valid JWT token in the Authorization header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+### Endpoints
+
+#### Create Recurring Transaction
+
+**POST** `/api/recurring-transactions`
+
+Creates a new recurring transaction for the authenticated user. Recurring transactions are useful for expenses or income that repeat on a regular schedule.
+
+**Request Body:**
+
+```json
+{
+  "budget_id": 1,
+  "category_id": 2,
+  "amount": 1200.0,
+  "note": "Monthly rent payment",
+  "frequency": "monthly",
+  "start_date": "2025-01-01",
+  "end_date": "2026-01-01"
+}
+```
+
+**Required Fields:**
+
+- `budget_id` (number) - ID of the budget this recurring transaction belongs to
+- `category_id` (number) - ID of the category for this recurring transaction
+- `amount` (number) - Transaction amount
+- `frequency` (string) - How often the transaction repeats (e.g., "daily", "weekly", "monthly", "yearly")
+- `start_date` (string) - Start date of the recurring pattern in YYYY-MM-DD format
+- `end_date` (string) - End date of the recurring pattern in YYYY-MM-DD format
+
+**Optional Fields:**
+
+- `note` (string) - Additional details about the recurring transaction
+
+**Supported Frequency Values:**
+
+- `daily` - Repeats every day
+- `weekly` - Repeats every week
+- `biweekly` - Repeats every two weeks
+- `monthly` - Repeats every month
+- `quarterly` - Repeats every three months
+- `yearly` - Repeats every year
+
+#### Update Recurring Transaction
+
+**PUT** `/api/recurring-transactions/{recurring_id}`
+
+Updates an existing recurring transaction.
+
+**Request Body:**
+
+```json
+{
+  "budget_id": 1,
+  "category_id": 2,
+  "amount": 1250.0,
+  "note": "Updated note",
+  "frequency": "monthly",
+  "start_date": "2025-01-01",
+  "end_date": "2026-01-01"
+}
+```
+
+**Required Fields in Body Request:**
+
+- `budget_id` (number) - ID of the budget this recurring transaction belongs to
+- `category_id` (number) - ID of the category for this recurring transaction
+- `amount` (number) - Transaction amount
+- `frequency` (string) - How often the transaction repeats
+- `start_date` (string) - Start date of the recurring pattern in YYYY-MM-DD format
+- `end_date` (string) - End date of the recurring pattern in YYYY-MM-DD format
+
+**Optional Fields in Body Request:**
+
+- `note` (string) - Additional details about the recurring transaction
+
+**Required Parameters**
+
+- `recurring_id` (number) - ID of the recurring transaction to update
+
+#### Get All Recurring Transactions for User
+
+**GET** `/api/recurring-transactions`
+
+Retrieves all recurring transactions associated with the authenticated user's budgets as an array of recurring transactions.
+
+#### Get Specific Recurring Transaction by ID
+
+**GET** `/api/recurring-transactions/:recurring_id`
+
+Retrieves a specific recurring transaction by its ID.
+
+**URL Parameters:**
+
+- `recurring_id` (required) - The ID of the recurring transaction to retrieve
+
+#### GET Rcurring Trasnaction Notes
+
+- Both endpoints require authentication via JWT token
+- The "get all" endpoint automatically filters recurring transactions by the authenticated user's budgets
+- The response includes all recurring transaction details including frequency, date ranges, and associated budget/category IDs
+- Empty results return a 404 status code with an appropriate error message
+
+## Budget API Endpoints
+
+### GET /api/budgets
+
+Retrieves all budgets for authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**Query Parameters** (optional):
+
+- `limit` (number) - Limits the number of budgets returned
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Examples**:
+
+```bash
+# Get all budgets
+curl -i http://localhost:8080/api/budgets \
+  -H "Authorization: Bearer <your_access_token>"
+
+# Get budgets with limit
+curl -i http://localhost:8080/api/budgets?limit=5 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### GET /api/budgets/:budget_id
+
+Retrieves a specific budget by budget ID for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to retrieve
+
+**Example**:
+
+```bash
+curl -i http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### PUT /api/budgets/:budget_id
+
+Updates an existing budget for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to update
+
+**Request Body** (all optional):
+
+```json
+{
+  "name": "Updated Budget Name",
+  "start_date": "2025-01-01",
+  "end_date": "2025-12-31",
+  "currency": "USD"
+}
+```
+
+**Example**:
+
+```bash
+curl -i -X PUT http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Vacation Fund",
+    "start_date": "2025-01-01",
+    "end_date": "2025-12-31",
+    "currency": "EUR"
+  }'
+```
+
+### DELETE /api/budgets/:budget_id
+
+Deletes a specific budget for the authenticated user.
+
+**Authentication Required**: Yes (Bearer token)
+
+**URL Parameters**:
+
+- `budget_id` (required) - The ID of the budget to delete
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Example**:
+
+```bash
+curl -i -X DELETE http://localhost:8080/api/budgets/1 \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### POST /api/budgets
+
+Creates a new budget for the user.
+
+**Request Headers**:
+
+```
+Authorization: Bearer <access_token>
+Content-Type: application/json
+```
+
+**Request Body** (required):
+
+```json
+{
+  "name": "Monthly Groceries",
+  "start_date": "2025-11-01",
+  "end_date": "2025-11-30",
+  "currency": "USD"
+}
+```
+
+**Field Requirement in Request Body**:
+
+- `name` (string, required) - Name of the budget
+- `start_date` (string, required) - Start date in YYYY-MM-DD format
+- `end_date` (string, required) - End date in YYYY-MM-DD format
+- `currency` (string, optional) - Currency code (e.g., USD, EUR)
+
+**Example**:
+
+```bash
+curl -i -X POST http://localhost:8080/api/budgets \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Monthly Groceries",
+    "start_date": "2025-11-01",
+    "end_date": "2025-11-30",
+    "currency": "USD"
+  }'
+```

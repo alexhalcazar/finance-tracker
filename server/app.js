@@ -5,10 +5,13 @@ import express from "express";
 import { verifyToken } from "./src/middleware/jwt.js";
 import passport from "./src/config/passport.js";
 import dummyRouter from "#routes/dummy";
-import authRouter from "./src/routes/auth.js";
+import authRouter from "#routes/auth";
 import bankRouter from "#routes/bank";
 import plaidRouter from "#routes/plaid";
 import budgets from "#routes/budgets";
+import categories from "#routes/categories";
+import transactions from "#routes/transactions";
+import recurringTransactions from "#routes/recurringTransactions";
 
 const app = express();
 const PORT = 3030;
@@ -29,6 +32,14 @@ app.use("/api/dummy", verifyToken, dummyRouter);
 app.use("/api/bank", verifyToken, bankRouter);
 app.use("/api/plaid", verifyToken, plaidRouter);
 app.use("/api/budgets", verifyToken, budgets);
+
+// categories routes
+app.use("/api/categories", verifyToken, categories);
+// transaction routes
+app.use("/api/transactions", verifyToken, transactions);
+
+// recurring transaction routes
+app.use("/api/recurring-transactions", verifyToken, recurringTransactions);
 
 if (["development", "production"].includes(process.env.ENVIRONMENT)) {
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

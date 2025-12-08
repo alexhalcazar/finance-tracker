@@ -15,6 +15,7 @@ export function Login() {
   const loginForm = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
@@ -22,9 +23,24 @@ export function Login() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-
     try {
-      console.log("Login Data\n", data);
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        errorData = await response.json();
+        console.error("Error:", errorData.error);
+        return;
+      }
+
+      const result = await response.json();
+      const token = result.token;
+      sessionStorage.setItem("token", token);
+      window.location.replace("http://localhost:5173/dashboard");
     } catch (error) {
       console.error("Login page error: ", error);
     } finally {

@@ -20,7 +20,6 @@ if (!JWT_ACCESS_SECRET) {
 
 export function verifyToken(req, res, next) {
   const authHeader = req.headers?.authorization;
-
   // Check header present + format
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Authorization token missing" });
@@ -28,6 +27,9 @@ export function verifyToken(req, res, next) {
 
   // Extract Token
   const token = authHeader.split(" ")[1];
+  if (!token || token === "undefined" || token === "null") {
+    return res.status(401).json({ message: "Authorization token missing" });
+  }
 
   // Verify (JWT_ACESS_SECRET + HS256 from utils)
   try {

@@ -1,14 +1,12 @@
 import crypto from "crypto";
 import "dotenv/config";
 
-const keyString = process.env.ENCRYPTION_KEY;
-
 // convert to 32-byte Buffer
-const key = Buffer.from(keyString, "hex");
+const key = Buffer.from(process.env.ENCRYPTION_KEY, "hex");
 
 export const encryptSymmetric = (plaintext) => {
   // create a random initialization vector
-  const iv = crypto.randomBytes(12).toString("base64");
+  const iv = crypto.randomBytes(12);
 
   // create a cipher object
   const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
@@ -20,16 +18,16 @@ export const encryptSymmetric = (plaintext) => {
   ciphertext += cipher.final("base64");
 
   // retrieve the authentication tag for the encryption
-  const tag = cipher.getAuthTag();
+  const tag = cipher.getAuthTag().toString("base64");
 
-  return { ciphertext, iv, tag };
+  return { ciphertext, iv: iv.toString("base64"), tag };
 };
 
 export const decryptSymmetric = (ciphertext, iv, tag) => {
   // create a decipher object
   const decipher = crypto.createDecipheriv(
     "aes-256-gcm",
-    Buffer.from(key, "base64"),
+    key,
     Buffer.from(iv, "base64")
   );
 

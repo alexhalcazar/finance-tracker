@@ -61,7 +61,6 @@ export const retrieveAccessToken = async (user_id) => {
       initialization_vector,
       tag
     );
-
     return access_token;
   } catch (err) {
     console.error(
@@ -71,6 +70,7 @@ export const retrieveAccessToken = async (user_id) => {
     throw new Error("Error retrieving access token from database");
   }
 };
+
 export const fetchTransactions = async (access_token, days = 30) => {
   try {
     const now = moment();

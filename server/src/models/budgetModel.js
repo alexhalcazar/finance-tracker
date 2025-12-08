@@ -12,10 +12,6 @@ class Budget {
    * If there is a limit then we limit results
    * Ohterwise we will return all budgets tied to the user*/
   async findAll(user_id, limitCount) {
-    if (user_id) {
-      return await db(this.tableName).where({ user_id }).select("*");
-    }
-
     if (limitCount) {
       return await db(this.tableName)
         .where({ user_id })

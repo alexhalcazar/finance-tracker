@@ -1,5 +1,5 @@
 import { AuthForm } from "@/features/auth/AuthForm";
-import GoogleLoginButton from "@/features/auth/GoogleLoginButton";
+import GoogleLoginButton from "@/components/ui/GoogleLoginButton";
 
 import { Link } from "react-router";
 import { Card } from "@/components/ui/Card";

@@ -1,8 +1,8 @@
 import { Sidebar } from "@/components/ui/SideBar";
-import { AddCategoryForm } from "@/features/budgets/AddCategoryForm";
+import { AddBudgetForm } from "@/features/budgets/AddBudgetForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addExpenseSchema } from "@/formSchemas/allFormSchemas";
+import { addBudgetSchema } from "@/formSchemas/allFormSchemas";
 import {
   budgetsLogo,
   sidebarItems,
@@ -13,24 +13,40 @@ import { useState } from "react";
 
 export const Budgets = () => {
   const form = useForm({
-    resolver: zodResolver(addExpenseSchema),
+    resolver: zodResolver(addBudgetSchema),
     defaultValues: {
-      type: "",
       name: "",
-      limit: "",
+      start_date: "",
+      end_date: "",
+      currency: "",
     },
   });
 
   // Local state to store categories (example)
-  const [categories, setCategories] = useState([]);
+  const [budgets, setBudgets] = useState([]);
 
   // Handle form submission
-  const onSubmit = (data) => {
-    console.log("Form submitted:", data);
-    // to be replaced with API call
-    setCategories((prev) => [...prev, data]);
+  const onSubmit = async (budget) => {
+    const { name, start_date, end_date, currency } = budget;
+    try {
+      const response = await fetch("/api/budgets", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, start_date, end_date, currency }),
+      });
+      const data = await response.json();
 
-    form.reset();
+      const budget = data.newBudget;
+      console.log("Our new budget", budget);
+      // setBudgets((prev) => [...prev, data]);
+
+      form.reset();
+    } catch (err) {
+      console.error("Error creating a new budget:", err);
+    }
   };
 
   return (
@@ -41,14 +57,11 @@ export const Budgets = () => {
         className={sideBarClass}
       />
       <Card className="m-4 p-4 flex-1 bg-gray-300 rounded-lg">
-        <h2 className="text-2xl font-bold mb-6">Budget Categories</h2>
-
-        {/* Container for form + category list */}
+        <h2 className="text-2xl font-bold mb-6">Budgets</h2>
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Left side: Add Category Form */}
           <div className="flex-1 bg-white p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4">Add New Category</h3>
-            <AddCategoryForm
+            <h3 className="text-xl font-semibold mb-4">Add New Budget</h3>
+            <AddBudgetForm
               formType="add"
               form={form}
               onSubmit={onSubmit}
@@ -57,20 +70,19 @@ export const Budgets = () => {
             />
           </div>
 
-          {/* Right side: Existing Categories */}
           <div className="flex-1 bg-white p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4">Existing Categories</h3>
-            {categories.length === 0 ? (
-              <p className="text-gray-500">No categories yet.</p>
+            <h3 className="text-xl font-semibold mb-4">Existing Budgets</h3>
+            {budgets.length === 0 ? (
+              <p className="text-gray-500">No budgets yet.</p>
             ) : (
               <ul className="space-y-2">
-                {categories.map((cat, index) => (
+                {budgets.map((budget, index) => (
                   <li
                     key={index}
                     className="border p-2 rounded-md flex justify-between"
                   >
                     <span>
-                      <strong>{cat.type}:</strong> {cat.name}
+                      <strong>{budget.type}:</strong> {budget.name}
                     </span>
                     <span>${parseFloat(cat.limit).toFixed(2)}</span>
                   </li>

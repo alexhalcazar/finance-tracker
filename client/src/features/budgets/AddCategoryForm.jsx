@@ -17,6 +17,7 @@ export function AddCategoryForm({
   onSubmit,
   isLoading,
   className = "",
+  budgets,
 }) {
   //  Make text be register when passed in register, otherwise it is sign in
   // const buttonCta = formType === "register" ? "Register" : "Sign In";
@@ -32,9 +33,10 @@ export function AddCategoryForm({
   } = form;
 
   const selectedType = watch("type");
+  const selectedBudget = watch("budget_id");
 
   const nameOptions = {
-    Type: ["income", "expense"],
+    Income: ["Income1", "Income2", "Income3"],
     Expense: [
       "Rent",
       "Bills",
@@ -51,14 +53,34 @@ export function AddCategoryForm({
   return (
     <form className={className} onSubmit={handleSubmit(onSubmit)}>
       <div className="pt-4 space-y-2">
+        <Label htmlFor="Budget">Budget</Label>
+        <select
+          id="budget_id"
+          className="w-full border rounded-md p-2"
+          {...register("budget_id")}
+        >
+          <option value="">Select a Budget</option>
+          {budgets.map((item) => (
+            <option key={item.budget_id} value={item.budget_id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+        <p className={cn([errors.budget_id?.message && "text-error"])}>
+          {errors.budget_id?.message}
+        </p>
+      </div>
+
+      <div className="pt-4 space-y-2">
         <Label htmlFor="type">Type</Label>
         <select
           id="type"
           className="w-full border rounded-md p-2"
           {...register("type")}
+          disabled={!selectedBudget}
         >
           <option value="">Select a type</option>
-          <option value="Type">Type</option>
+          <option value="Income">Income</option>
           <option value="Expense">Expense</option>
         </select>
         <p className={cn([errors.type?.message && "text-error"])}>
@@ -100,6 +122,23 @@ export function AddCategoryForm({
         />
         <p className={cn([errors.limit?.message && "text-error"])}>
           {errors.limit?.message}
+        </p>
+      </div>
+
+      <div className="pt-4 space-y-2">
+        <Label htmlFor="color">Color</Label>
+        <select
+          id="color"
+          className="w-full border rounded-md p-2"
+          {...register("color")}
+          disabled={!selectedBudget}
+        >
+          <option value="">Select a Color</option>
+          <option value="Green">Green</option>
+          <option value="Red">Red</option>
+        </select>
+        <p className={cn([errors.color?.message && "text-error"])}>
+          {errors.color?.message}
         </p>
       </div>
 

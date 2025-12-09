@@ -48,14 +48,6 @@ const getAllCategories = async (req, res) => {
       });
     }
 
-    // handle no budget id in params
-    if (!budget_id) {
-      return res.status(404).json({
-        message: "Budget ID params is required",
-      });
-    }
-
-    // handle categories that do exist
     const categories = await category.findAll(budget_id);
 
     if (!categories || categories.length === 0) {

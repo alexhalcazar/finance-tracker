@@ -3,7 +3,6 @@ import App from "@/App";
 import { Login } from "@/pages/Login";
 import { Register } from "@/pages/Register";
 import OAuthCallback from "@/pages/OAuthCallback";
-import { AddExpense } from "@/pages/AddExpense";
 import { Dashboard } from "@/pages/Dashboard";
 import { Transactions } from "@/pages/Transactions";
 import { Account } from "@/pages/Account";
@@ -29,7 +28,6 @@ const router = createBrowserRouter([
         path: "transactions",
         Component: Transactions,
       },
-      { path: "transactions/add-expense", Component: AddExpense },
       {
         path: "budgets",
         Component: Budgets,

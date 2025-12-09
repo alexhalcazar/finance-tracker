@@ -12,7 +12,7 @@ import {
   selectUserByEmail,
   selectUserByUsername,
 } from "../models/userModel.js";
-import { loginLimiter, registerLimiter } from "../middleware/rateLimiter.js";
+//import { loginLimiter, registerLimiter } from "../middleware/rateLimiter.js";
 import passport from "../config/passport.js";
 
 const router = express.Router();
@@ -32,90 +32,93 @@ const router = express.Router();
  * - 409: { error } (user already exists)
  * - 500: { error }
  */
-router.post("/register", registerLimiter, async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
+router.post(
+  "/register",
+  /*registerLimiter,*/ async (req, res) => {
+    try {
+      const { username, email, password } = req.body;
 
-    // Validate required fields
-    if (!username || !email || !password) {
-      return res.status(400).json({
-        error: "Username, email, and password are required",
+      // Validate required fields
+      if (!username || !email || !password) {
+        return res.status(400).json({
+          error: "Username, email, and password are required",
+        });
+      }
+
+      // Validate email format
+      if (!validateEmail(email)) {
+        return res.status(400).json({
+          error: "Invalid email format",
+        });
+      }
+
+      // Validate username
+      const usernameValidation = validateUsername(username);
+      if (!usernameValidation.isValid) {
+        return res.status(400).json({
+          error: usernameValidation.error,
+        });
+      }
+
+      // Validate password strength
+      const passwordValidation = validatePasswordStrength(password);
+      if (!passwordValidation.isValid) {
+        return res.status(400).json({
+          error: "Password does not meet strength requirements",
+          details: passwordValidation.errors,
+        });
+      }
+
+      // Check if email already exists
+      const existingEmail = await selectUserByEmail(email);
+      if (existingEmail) {
+        return res.status(409).json({
+          error: "Email already registered",
+        });
+      }
+
+      // Check if username already exists
+      const existingUsername = await selectUserByUsername(username);
+      if (existingUsername) {
+        return res.status(409).json({
+          error: "Username already taken",
+        });
+      }
+
+      // Hash the password
+      const password_hash = await hashPassword(password);
+
+      // Create user object
+      const userObj = {
+        username,
+        email: email.toLowerCase(), // Store emails in lowercase
+        password_hash,
+      };
+
+      // Insert user into database
+      const newUser = await insertUser(userObj);
+
+      // Generate JWT token
+      const token = generateAccessToken(newUser);
+
+      // Return success response (don't include password_hash)
+      return res.status(201).json({
+        message: "User registered successfully",
+        user: {
+          user_id: newUser.user_id,
+          username: newUser.username,
+          email: newUser.email,
+        },
+        token,
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+      return res.status(500).json({
+        error: "Registration failed. Please try again later.",
       });
     }
-
-    // Validate email format
-    if (!validateEmail(email)) {
-      return res.status(400).json({
-        error: "Invalid email format",
-      });
-    }
-
-    // Validate username
-    const usernameValidation = validateUsername(username);
-    if (!usernameValidation.isValid) {
-      return res.status(400).json({
-        error: usernameValidation.error,
-      });
-    }
-
-    // Validate password strength
-    const passwordValidation = validatePasswordStrength(password);
-    if (!passwordValidation.isValid) {
-      return res.status(400).json({
-        error: "Password does not meet strength requirements",
-        details: passwordValidation.errors,
-      });
-    }
-
-    // Check if email already exists
-    const existingEmail = await selectUserByEmail(email);
-    if (existingEmail) {
-      return res.status(409).json({
-        error: "Email already registered",
-      });
-    }
-
-    // Check if username already exists
-    const existingUsername = await selectUserByUsername(username);
-    if (existingUsername) {
-      return res.status(409).json({
-        error: "Username already taken",
-      });
-    }
-
-    // Hash the password
-    const password_hash = await hashPassword(password);
-
-    // Create user object
-    const userObj = {
-      username,
-      email: email.toLowerCase(), // Store emails in lowercase
-      password_hash,
-    };
-
-    // Insert user into database
-    const newUser = await insertUser(userObj);
-
-    // Generate JWT token
-    const token = generateAccessToken(newUser);
-
-    // Return success response (don't include password_hash)
-    return res.status(201).json({
-      message: "User registered successfully",
-      user: {
-        user_id: newUser.user_id,
-        username: newUser.username,
-        email: newUser.email,
-      },
-      token,
-    });
-  } catch (error) {
-    console.error("Registration error:", error);
-    return res.status(500).json({
-      error: "Registration failed. Please try again later.",
-    });
   }
-});
+);
 
 /**
  * POST /api/auth/login
@@ -131,54 +134,60 @@ router.post("/register", registerLimiter, async (req, res) => {
  * - 401: { error } (invalid credentials)
  * - 500: { error }
  */
-router.post("/login", loginLimiter, async (req, res) => {
-  try {
-    const { email, password } = req.body;
+router.post(
+  "/login",
+  /*loginLimiter,*/ async (req, res) => {
+    try {
+      const { email, password } = req.body;
 
-    // Validate required fields
-    if (!email || !password) {
-      return res.status(400).json({
-        error: "Email and password are required",
+      // Validate required fields
+      if (!email || !password) {
+        return res.status(400).json({
+          error: "Email and password are required",
+        });
+      }
+
+      // Find user by email
+      const user = await selectUserByEmail(email.toLowerCase());
+      if (!user) {
+        // Use generic error message to prevent user enumeration
+        return res.status(401).json({
+          error: "Invalid email or password",
+        });
+      }
+
+      // Verify password
+      const isValidPassword = await verifyPassword(
+        password,
+        user.password_hash
+      );
+      if (!isValidPassword) {
+        return res.status(401).json({
+          error: "Invalid email or password",
+        });
+      }
+
+      // Generate JWT token
+      const token = generateAccessToken(user);
+
+      // Return success response
+      return res.status(200).json({
+        message: "Login successful",
+        user: {
+          user_id: user.user_id,
+          username: user.username,
+          email: user.email,
+        },
+        token,
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      return res.status(500).json({
+        error: "Login failed. Please try again later.",
       });
     }
-
-    // Find user by email
-    const user = await selectUserByEmail(email.toLowerCase());
-    if (!user) {
-      // Use generic error message to prevent user enumeration
-      return res.status(401).json({
-        error: "Invalid email or password",
-      });
-    }
-
-    // Verify password
-    const isValidPassword = await verifyPassword(password, user.password_hash);
-    if (!isValidPassword) {
-      return res.status(401).json({
-        error: "Invalid email or password",
-      });
-    }
-
-    // Generate JWT token
-    const token = generateAccessToken(user);
-
-    // Return success response
-    return res.status(200).json({
-      message: "Login successful",
-      user: {
-        user_id: user.user_id,
-        username: user.username,
-        email: user.email,
-      },
-      token,
-    });
-  } catch (error) {
-    console.error("Login error:", error);
-    return res.status(500).json({
-      error: "Login failed. Please try again later.",
-    });
   }
-});
+);
 
 /**
  * POST /api/auth/logout

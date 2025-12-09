@@ -8,6 +8,7 @@ import { Dashboard } from "@/pages/Dashboard";
 import { Transactions } from "@/pages/Transactions";
 import { Account } from "@/pages/Account";
 import { Budgets } from "@/pages/Budgets";
+import { dashboardLoader } from "@/loaders/dashboardLoader";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,8 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         Component: Dashboard,
+        id: "dashboard",
+        loader: dashboardLoader,
       },
       {
         path: "transactions",

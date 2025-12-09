@@ -12,6 +12,7 @@ import budgets from "#routes/budgets";
 import categories from "#routes/categories";
 import transactions from "#routes/transactions";
 import recurringTransactions from "#routes/recurringTransactions";
+import summary from "#routes/summary";
 
 const app = express();
 const PORT = 3030;
@@ -40,6 +41,9 @@ app.use("/api/transactions", verifyToken, transactions);
 
 // recurring transaction routes
 app.use("/api/recurring-transactions", verifyToken, recurringTransactions);
+
+// summary routes
+app.use("/api/summary", verifyToken, summary);
 
 if (["development", "production"].includes(process.env.ENVIRONMENT)) {
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

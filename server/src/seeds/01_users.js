@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import bcrypt from "bcryptjs";
 
 export async function seed(knex) {
   // Clear existing data
@@ -8,13 +9,20 @@ export async function seed(knex) {
   await knex("budgets").del();
   await knex("users").del();
 
+  const testPassword = await bcrypt.hash("testPass1234", 2);
+
+  // update this test user to reflect the user you know of
+  const testUser = {
+    username: "jaydevelops1",
+    email: "jaymations1234@example.com",
+    password_hash: testPassword,
+  };
+
   const users = [...Array(5).keys()].map((key) => ({
     username: faker.internet.username(),
     email: faker.internet.email().toLowerCase(),
   }));
 
   // pass in test hardcoded test password hash for development purposes
-  await knex("users").insert(
-    users.map((user) => ({ ...user, password_hash: "test_password" }))
-  );
+  await knex("users").insert([testUser, ...users]);
 }

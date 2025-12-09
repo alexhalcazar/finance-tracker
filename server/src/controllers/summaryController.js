@@ -1,3 +1,4 @@
+import db from "#db";
 // summaryController.js handles grabbing global summary information
 
 const getTotalGlobalIncome = async (req, res) => {
@@ -8,7 +9,7 @@ const getTotalGlobalIncome = async (req, res) => {
       return res.status(400).json({ error: "User is not authorized" });
     }
 
-    const result = await knex("transactions")
+    const result = await db("transactions")
       .join("budgets", "transactions.budget_id", "budgets.budget_id")
       .join("categories", "transactions.category_id", "categories.category_id")
       .where("budgets.user_id", user_id)

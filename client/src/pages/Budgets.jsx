@@ -1,8 +1,12 @@
 import { Sidebar } from "@/components/ui/SideBar";
 import { AddBudgetForm } from "@/features/budgets/AddBudgetForm";
+import { AddCategoryForm } from "@/features/budgets/AddCategoryForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addBudgetSchema } from "@/formSchemas/allFormSchemas";
+import {
+  addBudgetSchema,
+  addCategorySchema,
+} from "@/formSchemas/allFormSchemas";
 import {
   budgetsLogo,
   sidebarItems,
@@ -12,7 +16,7 @@ import { Card } from "@/components/ui/Card";
 import { useState, useEffect } from "react";
 
 export const Budgets = () => {
-  const form = useForm({
+  const budgetForm = useForm({
     resolver: zodResolver(addBudgetSchema),
     defaultValues: {
       name: "",
@@ -22,7 +26,19 @@ export const Budgets = () => {
     },
   });
 
+  const categoryForm = useForm({
+    resolver: zodResolver(addCategorySchema),
+    defaultValues: {
+      budget_id: "",
+      type: "",
+      name: "",
+      limit: "",
+      color: "",
+    },
+  });
+
   const [budgets, setBudgets] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const token = sessionStorage.getItem("token");
 
@@ -53,7 +69,7 @@ export const Budgets = () => {
     fetchBudgets(token);
   }, [token]);
 
-  const onSubmit = async (budget) => {
+  const handleAddBudget = async (budget) => {
     const { name, start_date, end_date, currency } = budget;
     try {
       const response = await fetch("/api/budgets?limit=10", {
@@ -69,9 +85,38 @@ export const Budgets = () => {
 
       setBudgets((prev) => [...prev, budget]);
 
-      form.reset();
+      budgetForm.reset();
     } catch (err) {
       console.error("Error creating a new budget:", err);
+    }
+  };
+
+  const handleAddCategory = async (category) => {
+    console.log("Our category", category);
+    const { budget_id, type, name, limit, color } = category;
+    try {
+      const response = await fetch(`/api/categories/budget/${budget_id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          budget_id: parseInt(budget_id),
+          type,
+          name,
+          limit: parseFloat(limit),
+          color,
+        }),
+      });
+      const data = await response.json();
+      const category = data.createNewCategory;
+
+      setCategories((prev) => [...prev, category]);
+
+      categoryForm.reset();
+    } catch (err) {
+      console.error("Error creating a new budget category:", err);
     }
   };
 
@@ -89,8 +134,8 @@ export const Budgets = () => {
             <h3 className="text-xl font-semibold mb-4">Add New Budget</h3>
             <AddBudgetForm
               formType="add"
-              form={form}
-              onSubmit={onSubmit}
+              form={budgetForm}
+              onSubmit={handleAddBudget}
               isLoading={false}
               className="space-y-4"
             />
@@ -113,6 +158,39 @@ export const Budgets = () => {
                       <strong>{budget.budget_id}:</strong> {budget.name}
                     </span>
                     <span>${parseFloat(budget.currency).toFixed(2)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="flex-1 bg-white p-4 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4">Add New Category</h3>
+            <AddCategoryForm
+              formType="add"
+              form={categoryForm}
+              onSubmit={handleAddCategory}
+              isLoading={false}
+              className="space-y-4"
+              budgets={budgets}
+            />
+          </div>
+
+          <div className="flex-1 bg-white p-4 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4">Existing Categories</h3>
+            {categories.length === 0 ? (
+              <p className="text-gray-500">No categories yet.</p>
+            ) : (
+              <ul className="space-y-2">
+                {categories.map((cat, index) => (
+                  <li
+                    key={cat.category_id}
+                    className="border p-2 rounded-md flex justify-between"
+                  >
+                    <span>
+                      <strong>{cat.type}:</strong> {cat.name}
+                    </span>
+                    <span>${parseFloat(cat.limit).toFixed(2)}</span>
                   </li>
                 ))}
               </ul>

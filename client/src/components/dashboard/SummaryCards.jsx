@@ -4,8 +4,8 @@ import { Card } from "@/components/ui/Card";
 export const SummaryCards = () => {
   const data = useRouteLoaderData("dashboard");
   const income = data?.totalIncome;
-  const expenses = 0;
-  const budget = 0;
+  const expenses = data?.totalExpenses;
+  const budget = data?.remainingBudget;
 
   return (
     <div className="flex flex-wrap gap-4 justify-around">

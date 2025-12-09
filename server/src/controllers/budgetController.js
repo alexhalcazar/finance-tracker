@@ -40,7 +40,7 @@ const createNewBudget = async (req, res) => {
 const getAllBudgets = async (req, res) => {
   try {
     const { user_id } = req.user;
-    const { limit } = req.query;
+    const limit = Number(req.query.limit);
 
     if (limit) {
       const budgets = await budget.findAll(user_id, limit);

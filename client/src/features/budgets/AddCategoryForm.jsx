@@ -34,7 +34,7 @@ export function AddCategoryForm({
   const selectedType = watch("type");
 
   const nameOptions = {
-    Income: ["Income", "Income 2", "Income 3"],
+    Type: ["income", "expense"],
     Expense: [
       "Rent",
       "Bills",
@@ -58,7 +58,7 @@ export function AddCategoryForm({
           {...register("type")}
         >
           <option value="">Select a type</option>
-          <option value="Income">Income</option>
+          <option value="Type">Type</option>
           <option value="Expense">Expense</option>
         </select>
         <p className={cn([errors.type?.message && "text-error"])}>

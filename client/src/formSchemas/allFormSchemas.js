@@ -73,6 +73,7 @@ const addCategorySchema = z.object({
   limit: z.coerce
     .number({ invalid_type_error: "Amount must be a number" })
     .positive("Amount must be greater than zero"),
+  budget_id: z.string().nonempty("Budget is required"),
 });
 
 const addBudgetSchema = z.object({
